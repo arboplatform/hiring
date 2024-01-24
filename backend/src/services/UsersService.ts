@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { IUserAuth, IUserCreate } from "../interfaces/UserInterface";
 import { AppError } from "../errors/appError";
 import * as jwt from "jsonwebtoken";
+import { userWithoutPassword } from "../validations/user";
 
 export class UsersService {
   private repository = AppDataSource.getRepository(User);
@@ -15,10 +16,9 @@ export class UsersService {
       throw new AppError(409, "E-mail already registered");
     }
 
-    const password = bcrypt.hashSync(user.password, 10);
-    const userCreated = await this.repository.save({ ...user, password });
+    const userCreated = await this.repository.save(user);
 
-    return userCreated;
+    return userWithoutPassword.parse(userCreated);
   }
 
   async findAll() {
