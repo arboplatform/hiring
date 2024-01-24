@@ -25,4 +25,10 @@ export class PropertyService {
       returnOriginal: false,
     });
   }
+
+  async deleteProperty(id: string): Promise<any> {
+    return Property.findByIdAndDelete(id, {
+      returnOriginal: false,
+    });
+  }
 }

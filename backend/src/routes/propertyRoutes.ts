@@ -23,6 +23,8 @@ router.put('/:id', validateDto(UpdatePropertyDto), async (req, res) => {
   propertyController.updateProperty(req, res);
 });
 
-router.delete('/:id', async (req, res) => {});
+router.delete('/:id', async (req, res) => {
+  propertyController.deleteProperty(req, res);
+});
 
 export default router;
