@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "../errors/appError";
 import { EntityNotFoundError } from "typeorm";
+import { ZodError } from "zod";
 
 export const errorMiddleware = (
   err: any,
@@ -24,6 +25,10 @@ export const errorMiddleware = (
       code: 404,
       message: "Resource not found",
     });
+  }
+
+  if (err instanceof ZodError) {
+    return response.status(500).json(err.format());
   }
 
   return response.status(500).json({
