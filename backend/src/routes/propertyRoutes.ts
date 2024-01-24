@@ -11,13 +11,17 @@ router.get('/', async (req, res) => {
   propertyController.getProperty(req, res);
 });
 
-router.get('/:id', async (req, res) => {});
+router.get('/:id', async (req, res) => {
+  propertyController.getByIdProperty(req, res);
+});
 
 router.post('/', validateDto(CreatePropertyDto), (req, res) =>
   propertyController.createProperty(req, res),
 );
 
-router.put('/:id', async (req, res) => {});
+router.put('/:id', async (req, res) => {
+  propertyController.getByIdProperty(req, res);
+});
 
 router.delete('/:id', async (req, res) => {});
 

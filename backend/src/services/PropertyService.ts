@@ -12,4 +12,8 @@ export class PropertyService {
   async getProperty(): Promise<IProperty[]> {
     return Property.find();
   }
+
+  async getByIdProperty(id: string): Promise<IProperty[]> {
+    return Property.findById(id);
+  }
 }
