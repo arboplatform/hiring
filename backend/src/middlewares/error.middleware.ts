@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "../errors/appError";
+import { EntityNotFoundError } from "typeorm";
 
 export const errorMiddleware = (
   err: any,
@@ -15,7 +16,13 @@ export const errorMiddleware = (
     });
   }
 
-  console.error(err);
+  if (err instanceof EntityNotFoundError) {
+    return response.status(404).json({
+      status: "Not found",
+      code: 404,
+      message: "Resource not found",
+    });
+  }
 
   return response.status(500).json({
     status: "error",
