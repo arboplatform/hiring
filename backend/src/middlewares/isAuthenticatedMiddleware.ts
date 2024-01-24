@@ -5,13 +5,13 @@ import { AppError } from "../errors/appError";
 import { AppDataSource } from "../data-source";
 import { User } from "../entities/User";
 
-const defaultParams = {
-  required: false,
-  response: false,
+type IsAuthenticatedMiddlewareParameters = {
+  required?: boolean;
+  response?: boolean;
 };
 
 export const isAuthenticatedMiddleware =
-  ({ required = false, response = false } = defaultParams) =>
+  ({ required, response }: IsAuthenticatedMiddlewareParameters) =>
   async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization?.split(" ")[1];
 
