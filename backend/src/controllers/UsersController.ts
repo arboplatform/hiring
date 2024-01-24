@@ -1,4 +1,4 @@
-import { RequestCustomBody } from "../../@types/custom";
+import { RequestCustomBody } from "../@types/custom";
 import { IUserAuth, IUserCreate } from "../interfaces/UserInterface";
 import { UsersService } from "../services/UsersService";
 import { Request, Response } from "express";
