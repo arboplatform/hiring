@@ -3,9 +3,11 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  OneToMany,
 } from "typeorm";
+import { Property } from "./Property";
 
-@Entity('users')
+@Entity("users")
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -21,4 +23,7 @@ export class User {
 
   @CreateDateColumn()
   createdDate: Date;
+
+  @OneToMany(() => Property, (property) => property.user)
+  properties: Property[];
 }
