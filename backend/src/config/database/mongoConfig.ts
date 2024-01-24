@@ -4,11 +4,11 @@ const mongoConnect = async () => {
   try {
     const url = process.env.URL_MONGODB;
     if (!url) {
-      throw new Error('String URL_MONGODB is undefined in .env');
+      throw new Error('String URL_MONGODB is undefined in .env!');
     }
 
     await mongoose.connect(url);
-    console.log('Successfully connected to MongoDB');
+    console.log('Successfully connected to MongoDB!');
   } catch (error) {
     console.error('Error!! ', error);
     process.exit(1);
