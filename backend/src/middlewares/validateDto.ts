@@ -11,7 +11,7 @@ export function validateDto(dtoClass: any) {
       console.log('DTO Não Valido', req.body);
       res.status(400).json(errors);
     } else {
-      console.log('DTO Valido', req.body);
+      console.log('DTO Valido', req.body, output);
       req.body = output;
       next();
     }

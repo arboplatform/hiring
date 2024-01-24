@@ -8,6 +8,16 @@ import {
   ValidateNested,
 } from 'class-validator';
 
+export class AddressDto {
+  @IsString()
+  street: string;
+  @IsString()
+  city: string;
+  @IsString()
+  state: string;
+  @IsString()
+  zipCode: string;
+}
 export class CreatePropertyDto {
   @IsString()
   @IsNotEmpty()
@@ -25,12 +35,8 @@ export class CreatePropertyDto {
   @IsNotEmpty()
   type: string;
   @ValidateNested()
-  address: {
-    street: string;
-    city: string;
-    state: string;
-    zipCode: string;
-  };
+  @Type(() => AddressDto)
+  address: AddressDto;
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
