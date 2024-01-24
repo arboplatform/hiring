@@ -11,7 +11,7 @@ export const userValidate = z.object({
 
 export const createUserValidate = userValidate
   .extend({
-    passowrd: z
+    password: z
       .string()
       .min(6)
       .transform((pwd) => bcrypt.hashSync(pwd, 10)),
