@@ -18,12 +18,15 @@ app.use(helmet());
 // Cors
 app.use(cors());
 
+// Middleware Json
+app.use(express.json());
+
 app.get('/', (req, res) => {
   res.send('Hello! :3');
 });
 
 // Routes
-app.use('/properties', propertyRoutes);
+app.use('/propertys', propertyRoutes);
 
 // Server
 app.listen(port, () => {
