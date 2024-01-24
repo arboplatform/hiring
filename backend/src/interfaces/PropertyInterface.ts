@@ -1,4 +1,3 @@
-import { Address } from "../entities/Address";
 import { Property } from "../entities/Property";
 import { IAddressCreate } from "./AddressInterface";
 
