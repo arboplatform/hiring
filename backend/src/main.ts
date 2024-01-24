@@ -4,9 +4,13 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import { propertyRoutes } from './routes/';
+import mongoConnect from './config/database/mongoConfig';
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+// Connect MongoDB
+mongoConnect();
 
 // Helmet
 app.use(helmet());
