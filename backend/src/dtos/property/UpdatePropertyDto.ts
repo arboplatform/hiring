@@ -1,12 +1,14 @@
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
+import { StatusEnum } from '../../enums';
 
 export class UpdateAddressDto {
   @IsString()
@@ -50,4 +52,7 @@ export class UpdatePropertyDto {
   @IsString({ each: true })
   @IsOptional()
   img?: string[];
+  @IsEnum(StatusEnum)
+  @IsOptional()
+  status?: StatusEnum;
 }

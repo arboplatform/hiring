@@ -1,5 +1,7 @@
+import { StatusEnum } from '../enums';
+
 export interface BaseInterface {
-  status: string;
+  status: StatusEnum;
   createdAt: Date;
   updatedAt: Date;
 }
