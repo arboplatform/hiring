@@ -16,4 +16,17 @@ export class PropertyController {
       return res.status(500).json({ error: 'Ops! Error desconhecido!' });
     }
   }
+
+  async getProperty(req: Request, res: Response): Promise<Response> {
+    try {
+      const properties = await this.propertyService.getProperty();
+      return res.status(201).json(properties);
+    } catch (error) {
+      if (error instanceof Error) {
+        return res.status(500).json({ error: error.message });
+      }
+
+      return res.status(500).json({ error: 'Ops! Error desconhecido!' });
+    }
+  }
 }

@@ -8,4 +8,8 @@ export class PropertyService {
     const responseCreateProperty: IProperty = newProperty.toObject();
     return responseCreateProperty;
   }
+
+  async getProperty(): Promise<IProperty[]> {
+    return Property.find();
+  }
 }

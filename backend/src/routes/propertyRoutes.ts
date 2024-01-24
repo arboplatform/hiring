@@ -7,7 +7,9 @@ import { PropertyService } from '../services';
 const router = Router();
 const propertyController = new PropertyController(new PropertyService());
 
-router.get('/', async (req, res) => {});
+router.get('/', async (req, res) => {
+  propertyController.getProperty(req, res);
+});
 
 router.get('/:id', async (req, res) => {});
 
