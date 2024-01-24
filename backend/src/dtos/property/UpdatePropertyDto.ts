@@ -8,36 +8,40 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-export class AddressDto {
+export class UpdateAddressDto {
   @IsString()
-  street: string;
+  @IsOptional()
+  street?: string;
   @IsString()
-  city: string;
+  @IsOptional()
+  city?: string;
   @IsString()
-  state: string;
+  @IsOptional()
+  state?: string;
   @IsString()
-  zipCode: string;
+  @IsOptional()
+  zipCode?: string;
 }
-export class CreatePropertyDto {
+export class UpdatePropertyDto {
   @IsString()
-  @IsNotEmpty()
-  title: string;
+  @IsOptional()
+  title?: string;
   @IsString()
   @IsOptional()
   description?: string;
   @IsNumber()
-  @IsNotEmpty()
-  price: number;
+  @IsOptional()
+  price?: number;
   @IsNumber()
-  @IsNotEmpty()
-  area: number;
+  @IsOptional()
+  area?: number;
   @IsString()
-  @IsNotEmpty()
-  type: string;
+  @IsOptional()
+  type?: string;
   @ValidateNested()
-  @Type(() => AddressDto)
-  @IsNotEmpty()
-  address: AddressDto;
+  @Type(() => UpdateAddressDto)
+  @IsOptional()
+  address?: UpdateAddressDto;
   @IsArray()
   @IsString({ each: true })
   @IsOptional()

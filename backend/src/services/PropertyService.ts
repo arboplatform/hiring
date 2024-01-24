@@ -1,4 +1,4 @@
-import { CreatePropertyDto } from '../dtos';
+import { CreatePropertyDto, UpdatePropertyDto } from '../dtos';
 import { IProperty, Property } from '../models';
 
 export class PropertyService {
@@ -13,7 +13,16 @@ export class PropertyService {
     return Property.find();
   }
 
-  async getByIdProperty(id: string): Promise<IProperty[]> {
+  async getByIdProperty(id: string): Promise<IProperty> {
     return Property.findById(id);
+  }
+
+  async updateProperty(
+    id: string,
+    data: UpdatePropertyDto,
+  ): Promise<IProperty> {
+    return Property.findByIdAndUpdate(id, data, {
+      returnOriginal: false,
+    });
   }
 }

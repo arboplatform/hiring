@@ -44,4 +44,20 @@ export class PropertyController {
       return res.status(500).json({ error: 'Ops! Error desconhecido!' });
     }
   }
+
+  async updateProperty(req: Request, res: Response): Promise<Response> {
+    try {
+      const property = await this.propertyService.updateProperty(
+        req.params.id,
+        req.body,
+      );
+      return res.status(201).json(property);
+    } catch (error) {
+      if (error instanceof Error) {
+        return res.status(500).json({ error: error.message });
+      }
+
+      return res.status(500).json({ error: 'Ops! Error desconhecido!' });
+    }
+  }
 }

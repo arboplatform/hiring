@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { validateDto } from '../middlewares';
-import { CreatePropertyDto } from '../dtos';
+import { CreatePropertyDto, UpdatePropertyDto } from '../dtos';
 import { PropertyController } from '../controllers';
 import { PropertyService } from '../services';
 
@@ -19,8 +19,8 @@ router.post('/', validateDto(CreatePropertyDto), (req, res) =>
   propertyController.createProperty(req, res),
 );
 
-router.put('/:id', async (req, res) => {
-  propertyController.getByIdProperty(req, res);
+router.put('/:id', validateDto(UpdatePropertyDto), async (req, res) => {
+  propertyController.updateProperty(req, res);
 });
 
 router.delete('/:id', async (req, res) => {});
