@@ -3,10 +3,11 @@ import { Address } from "../entities/Address";
 import { Property } from "../entities/Property";
 import { IPropertyCreate } from "../interfaces/PropertyInterface";
 import { IUserAutheticated } from "../interfaces/UserInterface";
+import { propertyValidate } from "../validations/property";
 
 export class PropertiesService {
   private repositoryProperty = AppDataSource.getRepository(Property);
-  private repositoryAddress = AppDataSource.getRepository(Address); 
+  private repositoryAddress = AppDataSource.getRepository(Address);
 
   async create(property: IPropertyCreate, user: IUserAutheticated) {
     const addressCreated = this.repositoryAddress.create(property.address);
@@ -21,9 +22,11 @@ export class PropertiesService {
     try {
       const addressSave = await queryRunner.manager.save(addressCreated);
       propertyCreated.address = addressSave;
-      
-      await queryRunner.manager.save(propertyCreated);
+
+      const property = await queryRunner.manager.save(propertyCreated);
       await queryRunner.commitTransaction();
+
+      return propertyValidate.parse(property);
     } catch (err) {
       await queryRunner.rollbackTransaction();
       throw err;
