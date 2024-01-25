@@ -14,6 +14,11 @@ const propertiesRoutes = (app: Express) => {
     validationMiddleware(createPropertyValidate),
     controller.create.bind(controller)
   );
+  router.get(
+    "",
+    isAuthenticatedMiddleware({ required: true }),
+    controller.findAll.bind(controller)
+  );
 
   app.use("/properties", router);
 };

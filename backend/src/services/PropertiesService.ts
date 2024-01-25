@@ -34,4 +34,12 @@ export class PropertiesService {
       await queryRunner.release();
     }
   }
+
+  async findAll() {
+    const allProperties = await this.repositoryProperty.find({
+      relations: { user: true, address: true },
+    });
+
+    return propertyValidate.array().parse(allProperties);
+  }
 }
