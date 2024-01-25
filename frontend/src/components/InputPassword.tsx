@@ -1,6 +1,7 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   FormControl,
+  FormHelperText,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -12,9 +13,15 @@ import { UseFormRegisterReturn } from "react-hook-form";
 
 type InputPasswordProps = OutlinedInputProps & {
   register: UseFormRegisterReturn;
+  helperText?: React.ReactNode;
 };
 
-const InputPassword = ({ register, ...rest }: InputPasswordProps) => {
+const InputPassword = ({
+  register,
+  helperText,
+  error,
+  ...rest
+}: InputPasswordProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = (
@@ -26,11 +33,12 @@ const InputPassword = ({ register, ...rest }: InputPasswordProps) => {
 
   return (
     <FormControl variant="outlined" fullWidth>
-      <InputLabel htmlFor="outlined-adornment-password">Senha</InputLabel>
+      <InputLabel htmlFor={register.name}>{rest.label}</InputLabel>
       <OutlinedInput
         {...rest}
         {...register}
-        id="outlined-adornment-password"
+        error={error}
+        id={register.name}
         type={showPassword ? "text" : "password"}
         endAdornment={
           <InputAdornment position="end">
@@ -43,8 +51,10 @@ const InputPassword = ({ register, ...rest }: InputPasswordProps) => {
             </IconButton>
           </InputAdornment>
         }
-        label="Password"
       />
+      {!!helperText && error && (
+        <FormHelperText id="my-helper-text">{helperText}</FormHelperText>
+      )}
     </FormControl>
   );
 };
