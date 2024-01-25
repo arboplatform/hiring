@@ -1,8 +1,9 @@
 import React from "react";
 import { Table, Button, Form } from "react-bootstrap";
+import { usePropertyContext } from "../../context/PropertyContex";
 
 const PropertyTable = () => {
-    const properties: any[] = [];
+    const { state } = usePropertyContext();
 
     return (
         <div className="property-table-container">
@@ -15,9 +16,8 @@ const PropertyTable = () => {
                         <th>Status</th>
                     </tr>
                 </thead>
-                s
                 <tbody>
-                    {properties.map((property) => (
+                    {state.properties.map((property) => (
                         <tr key={property._id}>
                             <td>{property.title}</td>
                             <td>{property.price}</td>

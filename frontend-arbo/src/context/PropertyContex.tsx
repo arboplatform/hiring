@@ -70,7 +70,7 @@ export const PropertyProvider = ({ children }: { children: ReactNode }) => {
 // Hook
 export const usePropertyContext = () => {
     const context = React.useContext(PropertyContext);
-    if (context === undefined) {
+    if (!context) {
         throw new Error("usePropertyContext error!");
     }
     return context;

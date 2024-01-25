@@ -2,15 +2,25 @@ import React, { useState, useEffect } from "react";
 import PropertyTable from "../../components/Property/PropertyTable";
 import { Button, Form } from "react-bootstrap";
 import "./PropertyPage.scss";
+import { usePropertyContext } from "../../context/PropertyContex";
 
 const PropertyPage = () => {
     const [statusFilter, setStatusFilter] = useState("");
     const [typeFilter, setTypeFilter] = useState("");
 
-    const getProperty = async () => {};
+    const { state, getAllProperties } = usePropertyContext();
+
+    const getState = async () => {
+        console.log(
+            "Ver o state no console ou pode usar Devtools",
+            state.property,
+            state.properties
+        );
+    };
 
     useEffect(() => {
-        getProperty();
+        getState();
+        getAllProperties();
     }, []);
 
     return (
@@ -33,7 +43,7 @@ const PropertyPage = () => {
                     value={typeFilter}
                     onChange={(e) => setTypeFilter(e.target.value)}
                 />
-                <Button variant="info" onClick={getProperty}>
+                <Button variant="info" onClick={getAllProperties}>
                     Filtrar
                 </Button>
             </div>
