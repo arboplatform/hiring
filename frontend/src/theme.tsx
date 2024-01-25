@@ -10,7 +10,7 @@ const theme = createTheme({
       main: "#89CFF3",
     },
     error: {
-      main: red.A100,
+      main: red.A400,
     },
     success: {
       main: green.A200,
