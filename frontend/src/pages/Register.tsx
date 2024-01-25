@@ -8,6 +8,10 @@ import { registerUserFormSchema } from "../schemas/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router-dom";
 import { Divider } from "../components/Divider";
+import { useMutation } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import api from "../api";
+import { useNavigate } from "react-router-dom";
 
 type registerUserFormData = z.infer<typeof registerUserFormSchema>;
 
@@ -19,9 +23,26 @@ const Register = () => {
   } = useForm<registerUserFormData>({
     resolver: zodResolver(registerUserFormSchema),
   });
+  const navigate = useNavigate();
 
-  const handleSubmitLogin: SubmitHandler<registerUserFormData> = (data) => {
-    console.log(data);
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: (newUser: registerUserFormData) => {
+      return api.post("/users", newUser);
+    },
+    onSuccess: () => {
+      navigate("/login");
+    },
+  });
+
+  const handleSubmitLogin: SubmitHandler<registerUserFormData> = async (
+    data
+  ) => {
+    await toast.promise(mutateAsync(data), {
+      success: "Usuário criado! Faça login",
+      loading: "Criando seu usuário",
+      error:
+        "Erro ao criar seu usuário, verifque se seu e-mail já foi cadastrado",
+    });
   };
 
   return (
@@ -63,7 +84,7 @@ const Register = () => {
             {...register("name", { required: true })}
             error={!!errors.name?.message}
             helperText={errors.name?.message}
-            label="name"
+            label="Nome"
             fullWidth
           />
           <TextField
@@ -87,6 +108,7 @@ const Register = () => {
           />
           <LoadingButton
             type="submit"
+            loading={isPending}
             sx={{
               padding: 1,
               border: "1px solid",
