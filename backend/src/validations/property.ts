@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { userWithoutPassword } from "./user";
-import { addressValidate } from "./address";
+import { addressValidate, createAddressValidate } from "./address";
 
 export const propertyValidate = z.object({
   id: z.number(),
@@ -11,11 +11,13 @@ export const propertyValidate = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   user: userWithoutPassword,
-  address: addressValidate,
+  address: createAddressValidate,
 });
 
 export const createPropertyValidate = propertyValidate.omit({
   id: true,
   createdAt: true,
   updatedAt: true,
+  sold: true,
+  user: true,
 });
