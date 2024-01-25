@@ -82,7 +82,7 @@ const Login = () => {
             label="E-mail"
             fullWidth
           />
-          <InputPassword register={register("password")} />
+          <InputPassword register={register("password")} label="Senha" />
           <LoadingButton
             type="submit"
             sx={{
