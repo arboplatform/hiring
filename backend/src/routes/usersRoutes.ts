@@ -2,7 +2,10 @@ import { Router, Express } from "express";
 import { UsersController } from "../controllers/UsersController";
 import { isAuthenticatedMiddleware } from "../middlewares";
 import { validationMiddleware } from "../middlewares/validationMiddleware";
-import { createUserValidate } from "../validations/user";
+import {
+  checkPasswordValidate,
+  hashUserPasswordValidate,
+} from "../validations/user";
 
 const usersRoutes = (app: Express) => {
   const router = Router();
@@ -10,7 +13,8 @@ const usersRoutes = (app: Express) => {
 
   router.post(
     "",
-    validationMiddleware(createUserValidate),
+    validationMiddleware(checkPasswordValidate),
+    validationMiddleware(hashUserPasswordValidate),
     controller.create.bind(controller)
   );
   router.get(
