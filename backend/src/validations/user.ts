@@ -11,14 +11,31 @@ export const userValidate = z.object({
 
 export const createUserValidate = userValidate
   .extend({
+    password: z.string().min(6),
+    confirmPassword: z.string(),
+  })
+  .omit({
+    id: true,
+    createdDate: true,
+  });
+
+export const checkPasswordValidate = createUserValidate.refine(
+  ({ password, confirmPassword }) => password === confirmPassword,
+  {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  }
+);
+
+export const hashUserPasswordValidate = createUserValidate
+  .extend({
     password: z
       .string()
       .min(6)
       .transform((pwd) => bcrypt.hashSync(pwd, 10)),
   })
   .omit({
-    id: true,
-    createdDate: true,
+    confirmPassword: true,
   });
 
 export const userWithoutPassword = userValidate.omit({ password: true });
