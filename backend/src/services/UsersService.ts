@@ -24,7 +24,7 @@ export class UsersService {
   async findAll() {
     const allUsers = await this.repository.find();
 
-    return allUsers;
+    return userWithoutPassword.array().parse(allUsers);
   }
 
   async auth(user: IUserAuth) {
