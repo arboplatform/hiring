@@ -22,7 +22,7 @@ export class Property {
   @Column({ type: "boolean", default: false })
   sold: boolean;
 
-  @Column({ type: "decimal" })
+  @Column({ type: "double precision" })
   value: number;
 
   @Column({ type: "int" })
