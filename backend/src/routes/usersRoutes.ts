@@ -13,7 +13,11 @@ const usersRoutes = (app: Express) => {
     validationMiddleware(createUserValidate),
     controller.create.bind(controller)
   );
-  router.get("", controller.findAll.bind(controller));
+  router.get(
+    "",
+    isAuthenticatedMiddleware({ required: true }),
+    controller.findAll.bind(controller)
+  );
   router.post("/auth", controller.auth.bind(controller));
   router.post(
     "/is_authenticated",
