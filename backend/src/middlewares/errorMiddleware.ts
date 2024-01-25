@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { AppError } from "../errors/appError";
 import { EntityNotFoundError } from "typeorm";
 import { ZodError } from "zod";
+import { JsonWebTokenError } from "jsonwebtoken";
 
 export const errorMiddleware = (
   err: any,
@@ -29,6 +30,14 @@ export const errorMiddleware = (
 
   if (err instanceof ZodError) {
     return response.status(500).json(err.format());
+  }
+
+  if (err instanceof JsonWebTokenError) {
+    return response.status(401).json({
+      status: "Unathorized",
+      code: 401,
+      message: "Invalid token",
+    });
   }
 
   return response.status(500).json({
