@@ -21,6 +21,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         position="top-center"
         reverseOrder={false}
         gutter={8}
+        containerStyle={{
+          fontFamily: '"Poppins", sans-serif',
+        }}
         toastOptions={{
           duration: 5000,
         }}
