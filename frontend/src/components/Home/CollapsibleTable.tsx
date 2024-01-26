@@ -145,6 +145,11 @@ const CollapsibleTable = ({
           </TableBody>
         </Table>
       </TableContainer>
+      {!properties?.length && (
+        <Typography align="center" color="white" paddingY={10} variant="h5">
+          Não há imóveis cadastrados
+        </Typography>
+      )}
     </Box>
   );
 };
