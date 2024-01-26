@@ -37,7 +37,7 @@ export class Property {
   @ManyToOne(() => User, (user) => user.properties)
   user: User;
 
-  @OneToOne(() => Address)
+  @OneToOne(() => Address, { onDelete: "CASCADE" })
   @JoinColumn()
   address: Address;
 }
