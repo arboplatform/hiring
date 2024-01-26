@@ -34,6 +34,11 @@ export const isAuthenticatedMiddleware =
       }
 
       req.user = userValidate as IUserAutheticated;
+      return next();
+    }
+
+    if (required) {
+      throw new AppError(401, "Without authorization");
     }
 
     return next();
