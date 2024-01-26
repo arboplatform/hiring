@@ -14,6 +14,12 @@ export const propertyValidate = z.object({
   address: createAddressValidate,
 });
 
+export const listPropertyValidate = propertyValidate.extend({
+  address: addressValidate.extend({
+    id: z.number(),
+  }),
+});
+
 export const createPropertyValidate = propertyValidate.omit({
   id: true,
   createdAt: true,

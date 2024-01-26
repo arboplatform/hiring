@@ -3,7 +3,10 @@ import { Address } from "../entities/Address";
 import { Property } from "../entities/Property";
 import { IPropertyCreate } from "../interfaces/PropertyInterface";
 import { IUserAutheticated } from "../interfaces/UserInterface";
-import { propertyValidate } from "../validations/property";
+import {
+  listPropertyValidate,
+  propertyValidate,
+} from "../validations/property";
 
 export class PropertiesService {
   private repositoryProperty = AppDataSource.getRepository(Property);
@@ -40,6 +43,6 @@ export class PropertiesService {
       relations: { user: true, address: true },
     });
 
-    return propertyValidate.array().parse(allProperties);
+    return listPropertyValidate.array().parse(allProperties);
   }
 }
