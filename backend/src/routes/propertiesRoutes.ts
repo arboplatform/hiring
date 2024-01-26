@@ -19,6 +19,12 @@ const propertiesRoutes = (app: Express) => {
     isAuthenticatedMiddleware({ required: true }),
     controller.findAll.bind(controller)
   );
+  router.patch(
+    "/:propertyId/address/:addressId",
+    isAuthenticatedMiddleware({ required: true }),
+    validationMiddleware(createPropertyValidate),
+    controller.update.bind(controller)
+  );
   router.delete(
     "/:id",
     isAuthenticatedMiddleware({ required: true }),

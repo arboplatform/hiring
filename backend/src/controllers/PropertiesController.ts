@@ -18,6 +18,26 @@ export class PropertiesController {
     return res.json(allProperties);
   }
 
+  async update(
+    req: Request<
+      {
+        propertyId: string;
+        addressId: string;
+      },
+      any,
+      IPropertyCreate
+    >,
+    res: Response
+  ) {
+    const propertyUpdate = await this.service.update(
+      req.body,
+      parseInt(req.params.propertyId),
+      parseInt(req.params.addressId)
+    );
+
+    res.status(200).json(propertyUpdate);
+  }
+
   async delete(req: Request<{ id: string }>, res: Response) {
     await this.service.delete(parseInt(req.params.id));
 

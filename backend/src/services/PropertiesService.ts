@@ -46,6 +46,23 @@ export class PropertiesService {
     return listPropertyValidate.array().parse(allProperties);
   }
 
+  async update(
+    property: IPropertyCreate,
+    propertyId: number,
+    addressId: number
+  ) {
+    const { address, ...rest } = property;
+    await this.repositoryAddress.update({ id: addressId }, address);
+    await this.repositoryProperty.update({ id: propertyId }, rest);
+
+    const findProperty = await this.repositoryProperty.findOne({
+      where: { id: propertyId },
+      relations: { user: true, address: true },
+    });
+
+    return propertyValidate.parse(findProperty);
+  }
+
   async delete(id: number) {
     await this.repositoryProperty.delete({ id });
 
