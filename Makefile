@@ -11,6 +11,9 @@ up:
 stop: 
 	$(DOCKER_COMPOSE) stop
 
+build: 
+	$(DOCKER_COMPOSE) build
+
 create-env:
 	echo "POSTGRES_USER=imovel" > .env
 	echo "POSTGRES_PASSWORD=1234" >> .env
