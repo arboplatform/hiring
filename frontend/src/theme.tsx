@@ -13,7 +13,7 @@ const theme = createTheme({
       main: red.A400,
     },
     success: {
-      main: green.A200,
+      main: green.A700,
     },
   },
   typography: {

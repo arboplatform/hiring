@@ -52,9 +52,7 @@ const InputPassword = ({
           </InputAdornment>
         }
       />
-      {!!helperText && error && (
-        <FormHelperText id="my-helper-text">{helperText}</FormHelperText>
-      )}
+      {!!helperText && error && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   );
 };
