@@ -19,11 +19,23 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <ProtectedRoute>
+        <React.Suspense fallback={<Loading />}>
+          <Login />
+        </React.Suspense>
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/register",
-    element: <Register />,
+    element: (
+      <ProtectedRoute>
+        <React.Suspense fallback={<Loading />}>
+          <Register />
+        </React.Suspense>
+      </ProtectedRoute>
+    ),
   },
 ]);
 

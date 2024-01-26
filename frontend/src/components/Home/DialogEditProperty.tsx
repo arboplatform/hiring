@@ -142,7 +142,7 @@ const DialogEditProperty = ({
               defaultChecked={defaultValues.sold}
             />
           }
-          label="Label"
+          label="Vendido"
         />
       </DialogContent>
       <DialogTitle>Endereço</DialogTitle>

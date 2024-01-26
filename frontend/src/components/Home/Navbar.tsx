@@ -1,12 +1,10 @@
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import { clearToken } from "../../lib/localStorage";
 
 const Navbar = () => {
-  const navigate = useNavigate();
   const handleClickLogout = () => {
     clearToken();
-    navigate("/login");
+    location.reload();
   };
 
   return (
@@ -15,10 +13,11 @@ const Navbar = () => {
         position="static"
         sx={{
           backgroundColor: "white",
-          paddingY: "10px",
+          padding: "0 10px",
         }}
       >
         <Toolbar
+          disableGutters
           sx={{
             display: "flex",
             flexDirection: "row",
@@ -26,13 +25,13 @@ const Navbar = () => {
             maxWidth: "1200px",
             width: "100%",
             margin: "0 auto",
+            padding: 0,
           }}
         >
-          <Box>
-            <Typography variant="h4" component="h2" color="gray">
-              Imovel
-            </Typography>
-          </Box>
+          <Typography variant="h4" component="h2" color="gray">
+            Imovel
+          </Typography>
+
           <Button
             variant="contained"
             sx={{ color: "white" }}

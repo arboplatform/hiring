@@ -123,9 +123,10 @@ const CollapsibleTable = ({
         padding: 0,
         marginX: "auto",
         width: "100%",
+        marginBottom: "40px",
       }}
     >
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ maxHeight: "550px" }}>
         <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>

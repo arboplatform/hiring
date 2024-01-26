@@ -15,7 +15,7 @@ const Home = () => {
     <Stack>
       <Navbar />
       <DialogCreateProperty open={open} handleClose={handleClickCloseDialog} />
-      <Stack>
+      <Stack paddingX={1}>
         <Box
           maxWidth="lg"
           width="100%"

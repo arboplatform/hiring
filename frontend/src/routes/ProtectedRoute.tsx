@@ -13,7 +13,8 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     return <Loading />;
   }
 
-  if (!data) return <Navigate to="/login" replace />;
+  if (!data && location.pathname === "/")
+    return <Navigate to="/login" replace />;
 
   return <>{children}</>;
 };

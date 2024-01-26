@@ -31,9 +31,13 @@ const Login = () => {
     mutationFn: (data: loginUserFormData) =>
       api.post<string>("/users/auth", data),
     onSuccess: (data) => {
-      toast.success("Login realizado com sucesso");
+      api.defaults.headers.common["Authorization"] = `Bearer ${data.data}`;
       queryClient.setQueryData([QUERY_KEY.token], data.data);
+      toast.success("Login realizado com sucesso");
       navigate("/");
+    },
+    onError: () => {
+      toast.error("Não foi possivel realizar login, verifique suas credencias");
     },
   });
 
