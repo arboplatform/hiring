@@ -45,4 +45,10 @@ export class PropertiesService {
 
     return listPropertyValidate.array().parse(allProperties);
   }
+
+  async delete(id: number) {
+    await this.repositoryProperty.delete({ id });
+
+    return null;
+  }
 }

@@ -17,4 +17,10 @@ export class PropertiesController {
 
     return res.json(allProperties);
   }
+
+  async delete(req: Request<{ id: string }>, res: Response) {
+    await this.service.delete(parseInt(req.params.id));
+
+    return res.status(204).json();
+  }
 }

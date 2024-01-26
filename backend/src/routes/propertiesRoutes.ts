@@ -19,6 +19,11 @@ const propertiesRoutes = (app: Express) => {
     isAuthenticatedMiddleware({ required: true }),
     controller.findAll.bind(controller)
   );
+  router.delete(
+    "/:id",
+    isAuthenticatedMiddleware({ required: true }),
+    controller.delete.bind(controller)
+  );
 
   app.use("/properties", router);
 };
