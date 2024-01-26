@@ -1,7 +1,10 @@
 import { AppDataSource } from "../data-source";
 import { Address } from "../entities/Address";
 import { Property } from "../entities/Property";
-import { IPropertyCreate } from "../interfaces/PropertyInterface";
+import {
+  IPropertyCreate,
+  IPropertyUpdate,
+} from "../interfaces/PropertyInterface";
 import { IUserAutheticated } from "../interfaces/UserInterface";
 import {
   listPropertyValidate,
@@ -47,7 +50,7 @@ export class PropertiesService {
   }
 
   async update(
-    property: IPropertyCreate,
+    property: IPropertyUpdate,
     propertyId: number,
     addressId: number
   ) {

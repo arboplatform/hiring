@@ -2,7 +2,10 @@ import { Express, Router } from "express";
 import { PropertiesController } from "../controllers/PropertiesController";
 import { isAuthenticatedMiddleware } from "../middlewares";
 import { validationMiddleware } from "../middlewares/validationMiddleware";
-import { createPropertyValidate } from "../validations/property";
+import {
+  createPropertyValidate,
+  updatePropPertyAndAddress,
+} from "../validations/property";
 
 const propertiesRoutes = (app: Express) => {
   const router = Router();
@@ -22,7 +25,7 @@ const propertiesRoutes = (app: Express) => {
   router.patch(
     "/:propertyId/address/:addressId",
     isAuthenticatedMiddleware({ required: true }),
-    validationMiddleware(createPropertyValidate),
+    validationMiddleware(updatePropPertyAndAddress),
     controller.update.bind(controller)
   );
   router.delete(

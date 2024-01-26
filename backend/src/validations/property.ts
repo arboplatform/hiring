@@ -27,3 +27,10 @@ export const createPropertyValidate = propertyValidate.omit({
   sold: true,
   user: true,
 });
+
+export const updatePropPertyAndAddress = propertyValidate.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  user: true,
+});
