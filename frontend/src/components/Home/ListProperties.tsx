@@ -1,11 +1,12 @@
 import { useProperties } from "../../hooks/useProperties";
+import { Loading } from "../Loading";
 import { CollapsibleTable } from "./CollapsibleTable";
 
 const ListProperties = () => {
-  const { isFetching, isLoading, data } = useProperties();
+  const { isLoading, data } = useProperties();
 
-  if (isFetching || isLoading) {
-    return <p>loading</p>;
+  if (isLoading) {
+    return <Loading height="300px" />;
   }
 
   return <CollapsibleTable properties={data?.data} />;
