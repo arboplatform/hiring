@@ -19,6 +19,8 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { Delete, Edit } from "@mui/icons-material";
 import { convertToReal } from "../../lib/format";
 import { useProperties } from "../../hooks/useProperties";
+import { DialogEditProperty } from "./DialogEditProperty";
+import { useState } from "react";
 
 export type propertySchemaData = z.infer<typeof propertySchema>;
 
@@ -26,12 +28,23 @@ type RowProps = { row: propertySchemaData };
 
 function Row({ row }: RowProps) {
   const { mutateAsyncDeleteProperty } = useProperties();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [openFormEdit, setOpenFormEdit] = useState(false);
 
   const handleClickDelete = (id: number) => mutateAsyncDeleteProperty(id);
 
+  const handleClickOpenEdit = () => setOpenFormEdit(true);
+  const handleClickCloseEdit = () => setOpenFormEdit(false);
+
   return (
     <React.Fragment>
+      <DialogEditProperty
+        addressId={row.address.id}
+        propertyId={row.id}
+        open={openFormEdit}
+        defaultValues={row}
+        handleClose={handleClickCloseEdit}
+      />
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell>
           <IconButton
@@ -55,7 +68,7 @@ function Row({ row }: RowProps) {
         <TableCell align="center">{row.size}</TableCell>
         <TableCell align="center">{convertToReal.format(row.value)}</TableCell>
         <TableCell align="center">
-          <IconButton>
+          <IconButton onClick={handleClickOpenEdit}>
             <Edit color="primary" />
           </IconButton>
           <IconButton onClick={() => handleClickDelete(row.id)}>

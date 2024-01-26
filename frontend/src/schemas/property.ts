@@ -17,6 +17,17 @@ export const propertySchema = z.object({
 export const createPropertySchema = z.object({
   title: z.string(),
   value: z.string().transform((value) => parseFloat(value)),
-  size: z.string().transform((value) => parseFloat(value)),
+  size: z.string().transform((value) => parseInt(value)),
+  address: createAddressSchema,
+});
+
+export const updatePropertySchema = createPropertySchema.extend({
+  sold: z.boolean(),
+});
+
+export const defaultValuesPropertyForm = z.object({
+  title: z.string(),
+  value: z.number().transform((value) => value.toString()),
+  size: z.number().transform((value) => value.toString()),
   address: createAddressSchema,
 });
