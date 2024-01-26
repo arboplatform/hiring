@@ -1,5 +1,18 @@
 import { z } from "zod";
-import { createAddressSchema } from "./address";
+import { addressSchema, createAddressSchema } from "./address";
+import { userSchema } from "./user";
+
+export const propertySchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  sold: z.boolean(),
+  value: z.number(),
+  size: z.number(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  user: userSchema,
+  address: addressSchema,
+});
 
 export const createPropertySchema = z.object({
   title: z.string(),

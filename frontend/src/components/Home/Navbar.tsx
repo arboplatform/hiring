@@ -1,6 +1,6 @@
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { clearToken } from "../lib/localStorage";
+import { clearToken } from "../../lib/localStorage";
 
 const Navbar = () => {
   const navigate = useNavigate();

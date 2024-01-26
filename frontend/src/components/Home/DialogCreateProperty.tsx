@@ -14,11 +14,11 @@ import {
 } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import { createPropertySchema } from "../schemas/property";
+import { createPropertySchema } from "../../schemas/property";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import api from "../api";
+import api from "../../api";
 
 type createPropertyFormData = z.infer<typeof createPropertySchema>;
 

@@ -1,8 +1,9 @@
 import AddHomeIcon from "@mui/icons-material/AddHome";
 import { Box, Button, Stack, Typography } from "@mui/material";
-import { Navbar } from "../components/Navbar";
+import { Navbar } from "../components/Home/Navbar";
 import { useState } from "react";
-import { DialogCreateProperty } from "../components/DialogCreateProperty";
+import { DialogCreateProperty } from "../components/Home/DialogCreateProperty";
+import { ListProperties } from "../components/Home/ListProperties";
 
 const Home = () => {
   const [open, setOpen] = useState(false);
@@ -44,6 +45,7 @@ const Home = () => {
             Adicionar imóvel
           </Button>
         </Box>
+        <ListProperties />
       </Stack>
     </Stack>
   );
