@@ -76,7 +76,7 @@ function Row(props: { row: propertySchemaData }) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  <TableRow key={row.address.street}>
+                  <TableRow key={row.address.id}>
                     <TableCell>{row.address.street}</TableCell>
                     <TableCell>{row.address.number}</TableCell>
                     <TableCell>{row.address.zipCode}</TableCell>
