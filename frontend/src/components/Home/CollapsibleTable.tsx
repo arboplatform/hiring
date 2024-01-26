@@ -18,12 +18,17 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Delete, Edit } from "@mui/icons-material";
 import { convertToReal } from "../../lib/format";
+import { useProperties } from "../../hooks/useProperties";
 
 export type propertySchemaData = z.infer<typeof propertySchema>;
 
-function Row(props: { row: propertySchemaData }) {
-  const { row } = props;
+type RowProps = { row: propertySchemaData };
+
+function Row({ row }: RowProps) {
+  const { mutateAsyncDeleteProperty } = useProperties();
   const [open, setOpen] = React.useState(false);
+
+  const handleClickDelete = (id: number) => mutateAsyncDeleteProperty(id);
 
   return (
     <React.Fragment>
@@ -53,7 +58,7 @@ function Row(props: { row: propertySchemaData }) {
           <IconButton>
             <Edit color="primary" />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={() => handleClickDelete(row.id)}>
             <Delete color="error" />
           </IconButton>
         </TableCell>
