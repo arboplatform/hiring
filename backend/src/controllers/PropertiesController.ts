@@ -1,6 +1,9 @@
 import { Response, Request } from "express";
 import { RequestCustomBody } from "../@types/custom";
-import { IPropertyCreate } from "../interfaces/PropertyInterface";
+import {
+  IPropertyCreate,
+  IPropertyUpdate,
+} from "../interfaces/PropertyInterface";
 import { PropertiesService } from "../services/PropertiesService";
 
 export class PropertiesController {
@@ -25,7 +28,7 @@ export class PropertiesController {
         addressId: string;
       },
       any,
-      IPropertyCreate
+      IPropertyUpdate
     >,
     res: Response
   ) {
