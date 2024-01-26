@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  TextField,
-  Typography,
-  styled,
-} from "@mui/material";
+import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { InputPassword } from "../components/InputPassword";
@@ -14,18 +6,14 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { loginUserFormSchema } from "../schemas/user";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import api from "../api";
+import { Divider } from "../components/Divider";
+import { QUERY_KEY } from "../constants";
+import toast from "react-hot-toast";
 
 type loginUserFormData = z.infer<typeof loginUserFormSchema>;
-
-const Root = styled("div")(({ theme }) => ({
-  width: "100%",
-  ...theme.typography.body2,
-  color: theme.palette.text.secondary,
-  "& > :not(style) ~ :not(style)": {
-    marginTop: theme.spacing(2),
-  },
-}));
 
 const Login = () => {
   const {
@@ -36,8 +24,21 @@ const Login = () => {
     resolver: zodResolver(loginUserFormSchema),
   });
 
-  const handleSubmitLogin: SubmitHandler<loginUserFormData> = (data) => {
-    console.log(data);
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const { mutateAsync } = useMutation({
+    mutationFn: (data: loginUserFormData) =>
+      api.post<string>("/users/auth", data),
+    onSuccess: (data) => {
+      toast.success("Login realizado com sucesso");
+      queryClient.setQueryData([QUERY_KEY.token], data.data);
+      navigate("/");
+    },
+  });
+
+  const handleSubmitLogin: SubmitHandler<loginUserFormData> = async (data) => {
+    await mutateAsync(data);
   };
 
   return (
@@ -85,19 +86,18 @@ const Login = () => {
           <InputPassword register={register("password")} label="Senha" />
           <LoadingButton
             type="submit"
+            variant="contained"
             sx={{
               padding: 1,
-              border: "1px solid",
-              borderColor: "primary.main",
+              textDecoration: "none",
+              color: "white",
             }}
           >
             Login
           </LoadingButton>
         </Box>
 
-        <Root>
-          <Divider>ou</Divider>
-        </Root>
+        <Divider>ou</Divider>
 
         <Link
           to="/register"
@@ -107,12 +107,12 @@ const Login = () => {
         >
           <Button
             type="submit"
-            variant="contained"
+            variant="outlined"
             fullWidth
             sx={{
               padding: 1,
-              textDecoration: "none",
-              color: "white",
+              border: "1px solid",
+              borderColor: "primary.main",
             }}
           >
             Registre-se
