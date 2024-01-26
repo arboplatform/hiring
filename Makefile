@@ -22,3 +22,9 @@ create-env:
 
 migration:
 	docker exec -it $(DOCKER_NAME_BACKEND) /bin/bash -c "pnpm run migration:run"
+
+bash-back:
+	docker exec -it $(DOCKER_NAME_BACKEND) /bin/bash
+
+bash-front:
+	docker exec -it $(DOCKER_NAME_FRONTEND) /bin/bash

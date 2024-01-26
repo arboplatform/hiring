@@ -12,11 +12,8 @@ COPY [ "package.json", "pnpm-lock.yaml", "./" ] .
 
 RUN ["pnpm", "install"]
 
-COPY --chown=node:node . .
+COPY . .
 
-RUN chmod -R 777 /app && \
-    chown -R node:node /app
-
-USER node
+USER root
 
 CMD ["pnpm", "dev"]

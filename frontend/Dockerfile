@@ -14,6 +14,6 @@ RUN ["pnpm", "install"]
 
 COPY . .
 
-USER node
+USER root
 
 CMD ["pnpm", "dev"]
