@@ -1,36 +1,69 @@
-**Avaliação Técnica para Engenheiro de Software**
+# Imovel Status
 
----
+## Sobre o Projeto
 
-### Sobre
+"Imovel Status" é uma aplicação destinada a criar uma API RESTful juntamente com um layout. O objetivo é fornecer uma plataforma eficiente e fácil de usar para gerenciar informações de imóveis.
 
-Tendo em mente que somos uma empresa do ramo imobiliário, desenvolva uma aplicação web que disponibilize um CRUD (Create, Read, Update, Delete) para o cadastro de imóveis, com uma funcionalidade adicional: a capacidade de ativar e desativar imóveis. Os campos ficam ao seu critério, mas lembre-se de realizar as validações adequadas às suas escolhas.
+## Pré-requisitos
 
-### Instruções
+Antes de iniciar, certifique-se de que você tenha instalado:
 
-- Faça um fork deste repositório para a sua conta pessoal no GitHub.
-- Utilize ExpressJs ou Fastify para desenvolver o backend.
-- Escolha entre React ou Angular para desenvolver o frontend.
-- Siga as boas práticas de codificação e organize o código em camadas (services ou use cases).
-- Utilize um banco de dados de sua escolha (recomendamos SQLite ou MongoDB).
-- Forneça endpoints RESTful para cada operação do CRUD.
-- Implemente validações adequadas para garantir a integridade dos dados.
-- Adicione recursos extras (autenticação, pesquisa, responsividade) para destaque adicional (opcional).
-- Faça commits atômicos e com mensagens descritivas.
-- Ao concluir, abra um pull request de volta para este repositório.
+- [Docker Enginer](https://docs.docker.com/engine/install/ubuntu/) e [Docker Compose](https://docs.docker.com/compose/install/standalone/)
+- [Make](https://pt.linux-console.net/?p=15359)
 
-### Organização do Código
+Essas ferramentas são necessárias para executar e gerenciar o projeto.
 
-O código deve ser organizado em camadas, como services ou use cases, para garantir uma arquitetura modular e fácil manutenção.
+## Executando o Projeto
 
-### Entrega
+Siga os passos abaixo para colocar o projeto em funcionamento em sua máquina local:
 
-Envie o código completo, incluindo frontend, backend e documentação necessária para rodar os projetos no README por meio de um pull request até a data limite especificada.
+1. **Clone do projeto**:
+   Execute o comando abaixo para criar o arquivo .env necessário para o projeto:
 
-### Avaliação
+```bash
+git clone git@github.com:joaoparaujocr/Imovel-status.git
 
-Sua solução será avaliada com base na eficiência, legibilidade do código, boas práticas de desenvolvimento, capacidade de resolução de problemas, aderência aos requisitos fornecidos e na organização do código em camadas.
+#ou
 
-### Boa Sorte!
+git clone https://github.com/joaoparaujocr/Imovel-status.git
+```
 
-Agradecemos pelo seu interesse e esforço nesta etapa do processo seletivo. Estamos ansiosos para revisar sua contribuição!
+2. **Criação do arquivo .env**:
+   Execute o comando abaixo para criar o arquivo .env necessário para o projeto:
+
+```bash
+cd Imovel-status
+make create-env
+```
+
+3. **Build do Docker**:
+   Gere o build do projeto utilizando Docker através do comando:
+
+```bash
+make build
+```
+
+4. **Subindo os Containers**:
+   Para subir os containers do projeto, execute:\
+
+```bash
+make up
+```
+
+5. **Rodando as Migrações do Banco de Dados**:
+   Execute as migrações do banco de dados com o seguinte comando:
+
+```bash
+make migration
+```
+
+Após a execução destes passos, os serviços devem estar ativos. Você pode acessar:
+
+- Frontend em: [http://localhost:3000](http://localhost:3000)
+- Backend em: [http://localhost:8001](http://localhost:8001)
+
+## Suporte
+
+## Email: araujo.joao.paulo.jaa@gmail.com
+
+Boa sorte com seu projeto "Imovel Status"!
