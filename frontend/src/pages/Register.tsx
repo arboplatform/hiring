@@ -77,7 +77,7 @@ const Register = () => {
           component="form"
           display="flex"
           flexDirection="column"
-          gap={3}
+          gap={2}
           onSubmit={handleSubmit(handleSubmitLogin)}
         >
           <TextField
@@ -108,11 +108,12 @@ const Register = () => {
           />
           <LoadingButton
             type="submit"
+            variant="contained"
             loading={isPending}
             sx={{
               padding: 1,
-              border: "1px solid",
-              borderColor: "primary.main",
+              textDecoration: "none",
+              color: "white",
             }}
           >
             Registrar
@@ -129,12 +130,11 @@ const Register = () => {
         >
           <Button
             type="submit"
-            variant="contained"
             fullWidth
             sx={{
               padding: 1,
-              textDecoration: "none",
-              color: "white",
+              border: "1px solid",
+              borderColor: "primary.main",
             }}
           >
             Faça Login
