@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { AppError } from "../errors/appError";
 import { AppDataSource } from "../data-source";
 import { User } from "../entities/User";
+import { userWithoutPassword } from "../validations/user";
 
 type IsAuthenticatedMiddlewareParameters = {
   required?: boolean;
@@ -26,12 +27,13 @@ export const isAuthenticatedMiddleware =
         process.env.SECRET_KEY!
       ) as IUserAutheticated;
       const user = await repository.findOneByOrFail({ email, id });
+      const userValidate = userWithoutPassword.parse(user);
 
       if (response) {
-        return res.json(user);
+        return res.json(userValidate);
       }
 
-      req.user = user as IUserAutheticated;
+      req.user = userValidate as IUserAutheticated;
     }
 
     return next();
