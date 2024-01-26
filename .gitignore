@@ -2,3 +2,5 @@
 .history/
 *.vsix
 .idea
+.env
+/node_modules

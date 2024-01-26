@@ -1,0 +1,45 @@
+services:
+  database:
+    container_name: database_imovel_status
+    image: postgres:latest
+    env_file: .env
+    ports:
+      - 3333:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    container_name: backend_imovel_status
+    build:
+      context: ./backend
+    env_file: .env
+    ports:
+      - 8001:8001
+    depends_on:
+      database:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  frontend:
+    container_name: frontend_imovel_status
+    build:
+      context: ./frontend
+    ports:
+      - 3000:3000
+    env_file: .env
+    depends_on:
+      - database
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+volumes:
+  pgdata:
