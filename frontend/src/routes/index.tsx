@@ -5,6 +5,7 @@ import { Home } from "../pages/Home";
 import { ProtectedRoute } from "./ProtectedRoute";
 import React from "react";
 import { Loading } from "../components/Loading";
+import { NotFound } from "../pages/Notfound";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
         </React.Suspense>
       </ProtectedRoute>
     ),
+    errorElement: <NotFound />,
   },
   {
     path: "/login",
@@ -26,6 +28,7 @@ const router = createBrowserRouter([
         </React.Suspense>
       </ProtectedRoute>
     ),
+    errorElement: <NotFound />,
   },
   {
     path: "/register",
@@ -36,6 +39,7 @@ const router = createBrowserRouter([
         </React.Suspense>
       </ProtectedRoute>
     ),
+    errorElement: <NotFound />,
   },
 ]);
 
