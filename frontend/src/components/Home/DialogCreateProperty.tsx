@@ -16,9 +16,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { createPropertySchema } from "../../schemas/property";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import api from "../../api";
+import { QUERY_KEY } from "../../constants";
 
 type createPropertyFormData = z.infer<typeof createPropertySchema>;
 
@@ -31,6 +32,7 @@ const DialogCreateProperty = ({
   handleClose,
   open,
 }: DialogCreatePropertyProps) => {
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -45,6 +47,7 @@ const DialogCreateProperty = ({
       return api.post("/properties", data);
     },
     onSuccess() {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.properties] });
       reset();
     },
   });
