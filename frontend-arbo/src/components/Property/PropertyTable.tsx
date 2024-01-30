@@ -1,10 +1,24 @@
 import React from "react";
-import { Table, Button, Form } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 import { usePropertyContext } from "../../context/PropertyContex";
+import "./PropertyTable.scss";
 
-const PropertyTable = () => {
+// Interface para os props
+interface TablePropertyModalProps {
+    onGetProperty: (_id: string) => void;
+    onModalUpdateShow: () => void;
+    onDeleteProperty: (_id: string) => void;
+}
+
+const PropertyTable: React.FC<TablePropertyModalProps> = ({
+    onGetProperty,
+    onModalUpdateShow,
+    onDeleteProperty,
+}) => {
+    // Context
     const { state } = usePropertyContext();
 
+    // "Html"
     return (
         <div className="property-table-container">
             <Table striped bordered hover responsive>
@@ -14,6 +28,7 @@ const PropertyTable = () => {
                         <th>Valor</th>
                         <th>Area</th>
                         <th>Status</th>
+                        <th className="option-header">Opções</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,6 +41,28 @@ const PropertyTable = () => {
                                 className={`status-${property.status.toLowerCase()}`}
                             >
                                 {property.status}
+                            </td>
+                            <td className="button-cell">
+                                <Button
+                                    variant="warning"
+                                    className="edit-btn"
+                                    onClick={() => {
+                                        onGetProperty(property._id);
+                                        onModalUpdateShow();
+                                    }}
+                                >
+                                    Editar
+                                </Button>
+
+                                <Button
+                                    variant="danger"
+                                    className="edit-btn"
+                                    onClick={() => {
+                                        onDeleteProperty(property._id);
+                                    }}
+                                >
+                                    Deletar
+                                </Button>
                             </td>
                         </tr>
                     ))}
