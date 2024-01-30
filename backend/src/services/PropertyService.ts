@@ -21,9 +21,26 @@ export class PropertyService {
     id: string,
     data: UpdatePropertyDto,
   ): Promise<IProperty> {
-    return Property.findByIdAndUpdate(id, data, {
-      returnOriginal: false,
-    });
+    const updateData: Record<string, any> = {};
+
+    for (const [key, value] of Object.entries(data)) {
+      // Verificando se cada propriedade é aninhada, ou seja se e objeto e nao e array
+      if (
+        value !== null &&
+        typeof value === 'object' &&
+        !Array.isArray(value)
+      ) {
+        // Se for aninhada (objeto do address) ele atualiza o valor que esta vindo
+        for (const [nestedKey, nestedValue] of Object.entries(value)) {
+          updateData[`${key}.${nestedKey}`] = nestedValue;
+        }
+      } else {
+        // Se não-aninhadas
+        updateData[key] = value;
+      }
+    }
+    console.log('updateDataupdateData', updateData);
+    return Property.findByIdAndUpdate(id, { $set: updateData }, { new: true });
   }
 
   async deleteProperty(id: string): Promise<any> {
