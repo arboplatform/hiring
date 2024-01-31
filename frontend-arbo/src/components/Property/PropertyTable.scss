@@ -1,0 +1,18 @@
+.property-table-container {
+    .option-header {
+        width: auto;
+    }
+    .button-cell {
+        width: auto;
+        min-width: 150px;
+        white-space: nowrap;
+        display: flex;
+        justify-content: center;
+        padding: 5px;
+    }
+    
+    .button-cell > .btn:not(:last-child) {
+        margin-right: 10px;
+    }
+}
+

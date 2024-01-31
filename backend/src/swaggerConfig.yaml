@@ -1,0 +1,267 @@
+openapi: 3.0.0
+info:
+  title: Minha API Express
+  version: 1.0.0
+  description: Documentação da API Express com Swagger
+servers:
+  - url: 'http://localhost:5000'
+    description: Servidor de Desenvolvimento
+tags:
+  - name: Property
+    description: Operações relacionadas a propriedades
+paths:
+  /propertys:
+    post:
+      tags:
+        - Property
+      summary: Adicionar um novo imóvel.
+      description: ''
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/CreatePropertyDto'
+      responses:
+        200:
+          description: Imóvel criado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/PropertyResponse'
+        500:
+          description: Erro interno no servidor.
+    get:
+      tags:
+        - Property
+      summary: Buscar todos os imóveis
+      description: ''
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Propriedades dos imóveis encontrados.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/definitions/PropertyResponse'
+        404:
+          description: Imóveis não encontrada.
+        500:
+          description: Erro interno no servidor.
+  /propertys/{id}:
+    get:
+      tags:
+        - Property
+      summary: Busca one imóvel pelo id.
+      description: ''
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: id da propriedade.
+      responses:
+        200:
+          description: Propriedades do imóvel encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/PropertyResponse'
+        404:
+          description: Propriedade não encontrada.
+        500:
+          description: Erro interno no servidor.
+    put:
+      tags:
+        - Property
+      summary: Atualizar um imóvel existente
+      description: Atualiza os dados de um imóvel com base no ID fornecido.
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID do imóvel a ser atualizado
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/UpdatePropertyDto'
+      responses:
+        200:
+          description: Imóvel atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/PropertyResponse'
+        404:
+          description: Imóvel não encontrado
+        500:
+          description: Erro interno no servidor
+    delete:
+      tags:
+        - Property
+      summary: Deletar um imóvel
+      description: Deleta um imóvel com base no ID fornecido.
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID do imóvel a ser deletado
+      responses:
+        200:
+          description: Imóvel deletado com sucesso
+        404:
+          description: Imóvel não encontrado
+        500:
+          description: Erro interno no servidor
+
+  /login:
+
+definitions:
+  PropertyResponse:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      price:
+        type: number
+      area:
+        type: number
+      type:
+        type: string
+      address:
+        $ref: '#/definitions/AddressResponse'
+      features:
+        type: array
+        items:
+          type: string
+      img:
+        type: array
+        items:
+          type: string
+      _id:
+        type: string
+      status:
+        $ref: '#/definitions/StatusEnum'
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+  AddressResponse:
+    type: object
+    properties:
+      street:
+        type: string
+      city:
+        type: string
+      state:
+        type: string
+      zipCode:
+        type: string
+  CreatePropertyDto:
+    type: object
+    required:
+      - title
+      - price
+      - area
+      - type
+      - address
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      price:
+        type: number
+      area:
+        type: number
+      type:
+        type: string
+      address:
+        $ref: '#/definitions/AddressDto'
+      features:
+        type: array
+        items:
+          type: string
+      img:
+        type: array
+        items:
+          type: string
+  AddressDto:
+    type: object
+    required:
+      - street
+      - city
+      - state
+      - zipCode
+    properties:
+      street:
+        type: string
+      city:
+        type: string
+      state:
+        type: string
+      zipCode:
+        type: string
+  UpdatePropertyDto:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      price:
+        type: number
+      area:
+        type: number
+      type:
+        type: string
+      address:
+        $ref: '#/definitions/UpdateAddressDto'
+      features:
+        type: array
+        items:
+          type: string
+      img:
+        type: array
+        items:
+          type: string
+      status:
+        $ref: '#/definitions/StatusEnum'
+  UpdateAddressDto:
+    type: object
+    properties:
+      street:
+        type: string
+      city:
+        type: string
+      state:
+        type: string
+      zipCode:
+        type: string
+  StatusEnum:
+    type: string
+    enum:
+      - Ativo
+      - Inativo

@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+    mongodb:
+        image: mongo
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+            MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+        volumes:
+            - mongodata:/data/db
+        ports:
+            - "27017:27017"
+    backend:
+        build:
+            context: ./backend
+            dockerfile: Dockerfile
+        ports:
+            - "5000:5000"
+        depends_on:
+            - mongodb
+
+    frontend:
+        build:
+            context: ./frontend-arbo
+            dockerfile: Dockerfile
+            args:
+                REACT_APP_BACKEND_URL: http://localhost:5000
+        ports:
+            - "3000:80"
+volumes:
+    mongodata:
