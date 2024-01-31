@@ -15,10 +15,11 @@ const App = () => {
     return (
         <Router>
             <Routes>
-                <Route
+                {/* <Route
                     path="/properties"
                     element={<PropertyPageWithProvider />}
-                />
+                /> */}
+                <Route path="/" element={<PropertyPageWithProvider />} />
             </Routes>
         </Router>
     );

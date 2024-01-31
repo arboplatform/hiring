@@ -94,7 +94,7 @@ const PropertyPage = () => {
                     }
                 />
 
-                <Form.Control
+                {/* <Form.Control
                     type="text"
                     placeholder="Filtrar por status..."
                     value={statusFilter}
@@ -108,7 +108,7 @@ const PropertyPage = () => {
                 />
                 <Button variant="info" onClick={getAllProperties}>
                     Filtrar
-                </Button>
+                </Button> */}
             </div>
             <PropertyTable
                 onGetProperty={handleGetProperty}

@@ -1,36 +1,24 @@
-**Avaliação Técnica para Engenheiro de Software**
+### O projeto foi configurado o docker para o backend, frontend e mongoDB.
 
----
+-   Na raiz do projeto tem o .env onde ira precisar colocar usuário e senha (**MONGO_USERNAME** e **MONGO_PASSWORD**) para o mongoDB do docker.
+-   Dentro do projeto backend tera um **.env.example** copie e cole ou renomeie para **.env** e coloque as credenciais do mongoDB em **seu_usuario** e **sua_senha**, caso queira modificar o nome do banco de dados poderá mudar em **db_arbo**.
+-   Existe um **.env** no frontend porém sera apenas para modo **desenvolvedor**, pois o projeto usa a variável que esta dentro de **docker-compose.yml** variável **REACT_APP_BACKEND_URL**.
+-   Apos realizar todos o processo no terminal vá para a pasta raiz do projeto onde se encontra o docker-compose.yml e executar o comando **docker-compose up** caso rodar em background (sem ocupar o terminal) use a flag -d **docker-compose up -d**
+-   URL backend http://localhost:5000 e para documentação http://localhost:5000/api-docs
+-   URL frontend http://localhost:3000 para pagina de Imoveis (Listagem,Adicionar,Editar e Deletar)
 
-### Sobre
+### Executar projetos sem o Docker
 
-Tendo em mente que somos uma empresa do ramo imobiliário, desenvolva uma aplicação web que disponibilize um CRUD (Create, Read, Update, Delete) para o cadastro de imóveis, com uma funcionalidade adicional: a capacidade de ativar e desativar imóveis. Os campos ficam ao seu critério, mas lembre-se de realizar as validações adequadas às suas escolhas.
+**Backend**
 
-### Instruções
+-   Na pasta backend renomeie o **.env.example** para **.env** e colocar a a url do mongoDB e credenciais em **URL_MONGODB**.
+-   Instale as dependências executando **npm install** no terminal onde esta o projeto backend esta localizado.
+-   Poderá executar como desenvolvedor **npm run dev** ou fazer um build e start **npm run build** e **npm run start**.
+-   URL do projeto sera http://localhost:5000 e para a documentação do swagger http://localhost:5000/api-docs
 
-- Faça um fork deste repositório para a sua conta pessoal no GitHub.
-- Utilize ExpressJs ou Fastify para desenvolver o backend.
-- Escolha entre React ou Angular para desenvolver o frontend.
-- Siga as boas práticas de codificação e organize o código em camadas (services ou use cases).
-- Utilize um banco de dados de sua escolha (recomendamos SQLite ou MongoDB).
-- Forneça endpoints RESTful para cada operação do CRUD.
-- Implemente validações adequadas para garantir a integridade dos dados.
-- Adicione recursos extras (autenticação, pesquisa, responsividade) para destaque adicional (opcional).
-- Faça commits atômicos e com mensagens descritivas.
-- Ao concluir, abra um pull request de volta para este repositório.
+**Frontend**
 
-### Organização do Código
-
-O código deve ser organizado em camadas, como services ou use cases, para garantir uma arquitetura modular e fácil manutenção.
-
-### Entrega
-
-Envie o código completo, incluindo frontend, backend e documentação necessária para rodar os projetos no README por meio de um pull request até a data limite especificada.
-
-### Avaliação
-
-Sua solução será avaliada com base na eficiência, legibilidade do código, boas práticas de desenvolvimento, capacidade de resolução de problemas, aderência aos requisitos fornecidos e na organização do código em camadas.
-
-### Boa Sorte!
-
-Agradecemos pelo seu interesse e esforço nesta etapa do processo seletivo. Estamos ansiosos para revisar sua contribuição!
+-   Na pasta frontend-arbo renomeio o **.env.example** para **.env** e coloque a url do backend para a api do axios **REACT_APP_BACKEND_URL**
+-   Instale as dependências executando **npm install** no terminal onde esta o projeto frontend-arbo esta localizado.
+-   Poderá executar como desenvolvedor **npm run start** ou fazer um build com **npm run build** e para executar poderá instalar uma dependência global **npm install -g serve** e executar com **serve -s build** no terminal onde o projeto do frontend esta localizado.
+-   URL do projeto sera http://localhost:3000 para pagina de Imoveis (Listagem,Adicionar,Editar e Deletar)
