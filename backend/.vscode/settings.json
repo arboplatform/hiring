@@ -4,5 +4,11 @@
     "*.service.ts": "nest-service",
     "*.controller.ts": "nest-controller"
   },
-  "conventionalCommits.scopes": ["domain", "database", "application", "infra"]
+  "conventionalCommits.scopes": [
+    "domain",
+    "database",
+    "application",
+    "infra",
+    "test"
+  ]
 }
