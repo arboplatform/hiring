@@ -1,5 +1,5 @@
+import { faker } from '@faker-js/faker';
 import { Injectable } from '@nestjs/common';
-import casual from 'casual';
 
 import { Agency } from '@domain/entities/agency';
 
@@ -10,10 +10,11 @@ import { AgencyRequest } from '@infra/database/repositories/agency.repository';
 type Overrides = Partial<AgencyRequest>;
 
 export function makeFakeAgency(data = {} as Overrides) {
-  const { description, company_name } = casual;
+  const name = faker.company.name();
+  const description = faker.lorem.paragraph(3);
 
   const props: AgencyRequest = {
-    name: data.name || company_name,
+    name: data.name || name,
     description: data.description || description,
   };
 

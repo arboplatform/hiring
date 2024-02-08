@@ -1,8 +1,8 @@
 import { Entity } from '@core/domain/Entity';
-import { Address } from '@infra/http/rest/dto/enum/address';
-import { Price } from '@infra/http/rest/dto/enum/price';
 
 import { EstateRequest } from '@infra/database/repositories/estate.repository';
+import { Address } from '@infra/http/rest/dto/enum/address';
+import { Price } from '@infra/http/rest/dto/enum/price';
 
 import { Agency } from './agency';
 import { EstateFeature } from './estateFeature';

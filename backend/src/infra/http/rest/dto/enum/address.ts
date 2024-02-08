@@ -1,19 +1,18 @@
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsPositive, IsString, Matches } from 'class-validator';
 
 export class Address {
-  @IsNotEmpty()
+  @IsString()
   street: string;
 
-  @IsNotEmpty()
+  @IsString()
   city: string;
 
-  @IsNumber()
-  @IsNotEmpty()
+  @IsPositive()
   number: number;
 
-  @IsNotEmpty()
+  @IsString()
   state: string;
 
-  @IsNotEmpty()
+  @Matches(/^[0-9]{5}-[0-9]{3}$/)
   zip: string;
 }

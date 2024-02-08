@@ -1,4 +1,3 @@
-import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -20,7 +19,6 @@ async function bootstrap() {
 
   app.useLogger(LoggerServiceInstance);
   app.useGlobalInterceptors(new LoggerErrorInterceptor());
-  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
 
   app.enableShutdownHooks();
 

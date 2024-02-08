@@ -1,47 +1,44 @@
+import { faker } from '@faker-js/faker';
 import { Injectable } from '@nestjs/common';
-import casual from 'casual';
 
 import { Estate } from '@domain/entities/estate';
-import { Feature } from '@domain/entities/feature';
 
 import { EstateMapper } from '@infra/database/prisma/mappers/estate.mapper';
 import { PrismaService } from '@infra/database/prisma/prisma.service';
 import { EstateRequest } from '@infra/database/repositories/estate.repository';
-import { Price } from '@infra/http/rest/dto/enum/price';
+import { Price, PriceType } from '@infra/http/rest/dto/enum/price';
 
 import { makeFakeAgency } from './agency.factory';
 import { makeFakeEstateFeature } from './estateFeature.factory';
 import { makeFakeEstateType } from './estateType.factory';
-import { makeFakeFeature } from './feature.factory';
-import { makeFakeFeatureCategory } from './featureCategory.factory';
 
-type Overrides = Partial<EstateRequest>;
+type Overrides = Partial<{ id: string } & EstateRequest>;
 
 export function makeFakeEstate(data = {} as Overrides) {
-  const { name, description, street, city, state, building_number, zip } =
-    casual;
+  const name = faker.lorem.words(5);
+  const description = faker.lorem.paragraph(3);
+  const street = faker.location.street();
+  const city = faker.location.city();
+  const state = faker.location.state();
+  const number = faker.location.buildingNumber();
+  const zip = faker.location.zipCode('#####-###');
 
   const slug = (data.name || name).toLowerCase().replace(/\s/g, '-');
 
-  const featureCategory = makeFakeFeatureCategory({ name: 'Geral' });
   const type = makeFakeEstateType();
   const agency = makeFakeAgency();
 
-  const features = new Array<Feature>(casual.integer(1, 2)).fill(
-    makeFakeFeature({ category: featureCategory }),
-  );
+  const prices = [
+    ...new Array<Price>(faker.number.int({ min: 1, max: 2 })),
+  ].map(() => ({
+    value: Number(faker.finance.amount({ min: 1000, max: 1000000 })),
+    type: faker.helpers.arrayElement(Object.values(PriceType)),
+  }));
 
-  const estateFeatures = features.map((feature) =>
-    makeFakeEstateFeature({ feature, estateId: estate.id }),
-  );
-
-  const prices = new Array<Price>(casual.integer(1, 2)).fill({
-    value: casual.double(1000, 15000),
-    type: casual.random_element(['RENT', 'SALE']),
-  });
+  const estateFeatures = [...new Array(2)].map(() => makeFakeEstateFeature());
 
   const props: EstateRequest = {
-    slug,
+    slug: data.slug || slug,
     name: data.name || name,
     description: data.description || description,
     active: data.active || true,
@@ -50,18 +47,18 @@ export function makeFakeEstate(data = {} as Overrides) {
       street: data.address?.street || street,
       city: data.address?.city || city,
       state: data.address?.state || state,
-      number: data.address?.number || Number(building_number),
-      zip: data.address?.zip || zip([5, 8]),
+      number: data.address?.number || Number(number),
+      zip: data.address?.zip || zip,
     },
 
-    agencyId: agency.id,
-    agency,
+    agencyId: data.agency?.id || agency.id,
+    agency: data.agency || agency,
 
-    typeId: type.id,
-    type,
+    typeId: data.type?.id || type.id,
+    type: data.type || type,
 
-    prices,
-    features: estateFeatures,
+    prices: data.prices || prices,
+    features: data.features || estateFeatures,
   };
 
   const estate = Estate.create(props);
@@ -76,28 +73,60 @@ export class EstateFactory {
   async makeEstate(data = {} as Overrides): Promise<Estate> {
     const estate = makeFakeEstate(data);
 
-    const { typeId, agencyId, features, ...rest } =
+    const { typeId, agencyId, features, agency, type, ...rest } =
       EstateMapper.toInstance(estate);
 
     await this.prisma.estate.create({
+      select: {
+        features: true,
+        id: true,
+      },
       data: {
         ...rest,
         type: {
-          connect: { id: typeId },
+          connectOrCreate: {
+            where: { id: typeId },
+            create: type,
+          },
         },
         agency: {
-          connect: { id: agencyId },
+          connectOrCreate: {
+            where: { id: agencyId },
+            create: agency,
+          },
         },
         features: {
-          connectOrCreate: features.map((feature) => {
-            const { featureId, ...rest } = feature;
+          connectOrCreate: features.map((estateFeature) => {
+            const {
+              // eslint-disable-next-line unused-imports/no-unused-vars
+              estateId,
+              featureId,
+              feature: {
+                categoryId,
+                // eslint-disable-next-line unused-imports/no-unused-vars
+                category: { features, ...category },
+                ...feature
+              },
+              ...rest
+            } = estateFeature;
 
             return {
-              where: { id: feature.id },
+              where: { id: estateFeature.id },
               create: {
                 ...rest,
                 feature: {
-                  connect: { id: featureId },
+                  connectOrCreate: {
+                    where: { id: featureId },
+                    create: {
+                      ...feature,
+                      category: {
+                        connectOrCreate: {
+                          where: { id: categoryId },
+                          create: category,
+                        },
+                      },
+                    },
+                  },
                 },
               },
             };

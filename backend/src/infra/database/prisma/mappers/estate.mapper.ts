@@ -1,8 +1,8 @@
 import { Estate } from '@prisma/client';
 
-import { PriceType } from '@infra/http/rest/dto/enum/price';
-
 import { Estate as EstateEntity, EstateProps } from '@domain/entities/estate';
+
+import { PriceType } from '@infra/http/rest/dto/enum/price';
 
 import { AgencyInstance, AgencyMapper } from './agency.mapper';
 import {

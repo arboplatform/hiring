@@ -37,4 +37,5 @@ export default {
     prefix: '<rootDir>',
   }),
   preset: 'ts-jest',
+  setupFilesAfterEnv: ['jest-extended/all'],
 } as Config.InitialOptions;

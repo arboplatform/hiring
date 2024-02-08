@@ -1,5 +1,5 @@
+import { faker } from '@faker-js/faker';
 import { Injectable } from '@nestjs/common';
-import casual from 'casual';
 
 import { EstateTypeFeature } from '@domain/entities/estateTypeFeature';
 
@@ -16,7 +16,7 @@ type Overrides = Omit<
   }>;
 
 export function makeFakeEstateTypeFeature(data = {} as Overrides) {
-  const { boolean } = casual;
+  const boolean = faker.datatype.boolean();
 
   const props: EstateTypeFeatureRequest = {
     required: data.required || boolean,

@@ -1,4 +1,4 @@
 import { Paginated } from '../../../common/dto/models/paginated';
-import { Estate } from '../../models/estate';
+import { EstateResponse } from '../../models/estate';
 
-export class EstatePager extends Paginated<Estate>() {}
+export class EstatePager extends Paginated<EstateResponse>() {}

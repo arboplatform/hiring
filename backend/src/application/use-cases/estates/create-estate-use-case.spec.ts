@@ -1,14 +1,22 @@
+import { faker } from '@faker-js/faker';
 import { Test } from '@nestjs/testing';
 
 import { Estate } from '@domain/entities/estate';
 
 import { AgencyRepository } from '@infra/database/repositories/agency.repository';
 import { EstateRepository } from '@infra/database/repositories/estate.repository';
+import { EstateFeatureRepository } from '@infra/database/repositories/estateFeature.repository';
+import { EstateTypeRepository } from '@infra/database/repositories/estateType.repository';
 import { FeatureRepository } from '@infra/database/repositories/feature.repository';
+import { FeatureCategoryRepository } from '@infra/database/repositories/featureCategory.repository';
 import { PriceType } from '@infra/http/rest/dto/enum/price';
 
 import { InMemoryAgencyRepository } from '@test/repositories/in-memory-agency.repository';
 import { InMemoryEstateRepository } from '@test/repositories/in-memory-estate.repository';
+import { InMemoryEstateFeatureRepository } from '@test/repositories/in-memory-estateFeature.repository';
+import { InMemoryEstateTypeRepository } from '@test/repositories/in-memory-estateType.repository';
+import { InMemoryFeatureRepository } from '@test/repositories/in-memory-feature.repository';
+import { InMemoryFeatureCategoryRepository } from '@test/repositories/in-memory-featureCategory.repository';
 
 import { CreateEstateUseCase } from './create-estate-use-case';
 
@@ -27,8 +35,20 @@ describe('Create Estate UseCase', () => {
           useClass: InMemoryAgencyRepository,
         },
         {
+          provide: EstateTypeRepository,
+          useClass: InMemoryEstateTypeRepository,
+        },
+        {
           provide: FeatureRepository,
           useClass: InMemoryFeatureRepository,
+        },
+        {
+          provide: EstateFeatureRepository,
+          useClass: InMemoryEstateFeatureRepository,
+        },
+        {
+          provide: FeatureCategoryRepository,
+          useClass: InMemoryFeatureCategoryRepository,
         },
         CreateEstateUseCase,
       ],
@@ -49,18 +69,18 @@ describe('Create Estate UseCase', () => {
         zip: '12345678',
       },
       prices: [
+        { value: 123, type: PriceType.RENT },
+        { value: 123, type: PriceType.SALE },
+      ],
+      agency: { connect: { id: faker.string.uuid() } },
+      type: { connect: { id: faker.string.uuid() } },
+      features: [
         {
-          value: 123,
-          type: PriceType.rent,
-        },
-        {
-          value: 123,
-          type: PriceType.sale,
+          amount: 1,
+          featureId: faker.string.uuid(),
+          showAmount: true,
         },
       ],
-      agency: { connect: { id: '' } },
-      type: { connect: { id: '' } },
-      features: { connect: [{ id: '' }] },
     });
 
     expect(response).not.toBeNull();

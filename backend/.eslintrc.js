@@ -8,6 +8,7 @@ module.exports = {
     '@typescript-eslint/eslint-plugin',
     'eslint-plugin-import-helpers',
     'unused-imports',
+    'jest-extended',
   ],
   extends: [
     'plugin:@typescript-eslint/recommended',
@@ -25,9 +26,10 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    // '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-    'no-unused-vars': 'off', // or "@typescript-eslint/no-unused-vars": "off",
+    '@typescript-eslint/no-unused-vars': 'off',
     'unused-imports/no-unused-imports': 'error',
+    'jest-extended/prefer-to-be-true': 'warn',
+    'jest-extended/prefer-to-be-false': 'error',
     'unused-imports/no-unused-vars': [
       'warn',
       {

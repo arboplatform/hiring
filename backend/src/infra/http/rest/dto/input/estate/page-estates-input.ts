@@ -16,11 +16,15 @@ export class PageEstateInput extends PaginationArgs {
 
   @IsOptional()
   @IsString()
-  description?: string;
+  slug?: string;
 
   @IsOptional()
-  @IsBoolean()
+  @IsString()
+  description?: string;
+
   @Transform(({ value }) => value === 'true')
+  @IsOptional()
+  @IsBoolean()
   active?: boolean;
 
   // @IsOptional()
@@ -31,6 +35,7 @@ export class PageEstateInput extends PaginationArgs {
   // @IsString()
   // city?: string;
 
+  // @Transform(({ value }) => Number(value))
   // @IsOptional()
   // @IsPositive()
   // number?: number;
@@ -51,23 +56,23 @@ export class PageEstateInput extends PaginationArgs {
   @IsMongoId()
   typeId?: string;
 
+  @Transform(({ value }) => Number(value))
   @IsOptional()
   @IsPositive()
-  @Transform(({ value }) => Number(value))
   'rent.min'?: number;
 
+  @Transform(({ value }) => Number(value))
   @IsOptional()
   @IsPositive()
-  @Transform(({ value }) => Number(value))
   'rent.max'?: number;
 
+  @Transform(({ value }) => Number(value))
   @IsOptional()
   @IsPositive()
-  @Transform(({ value }) => Number(value))
   'sale.min'?: number;
 
+  @Transform(({ value }) => Number(value))
   @IsOptional()
   @IsPositive()
-  @Transform(({ value }) => Number(value))
   'sale.max'?: number;
 }

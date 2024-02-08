@@ -44,7 +44,7 @@ model Estate {
 }
 
 type Price {
-  value Int
+  value Float
   type  PriceType
 }
 
@@ -75,6 +75,8 @@ model EstateFeature {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([estateId, featureId], name: "UniqueEstateFeature")
 }
 
 model Feature {
@@ -89,8 +91,8 @@ model Feature {
   category   FeatureCategory @relation(fields: [categoryId], references: [id])
   categoryId String          @db.ObjectId
 
-  // estateTypes EstateTypeFeature[]
-  estates EstateFeature[]
+  estateTypes EstateTypeFeature[]
+  estates     EstateFeature[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -106,27 +108,27 @@ model FeatureCategory {
   updatedAt DateTime @updatedAt
 }
 
-// model EstateTypeFeature {
-//   id String @id @default(auto()) @map("_id") @db.ObjectId
+model EstateTypeFeature {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
-//   required Boolean @default(false)
+  required Boolean @default(false)
 
-//   estateType   EstateType @relation(fields: [estateTypeId], references: [id])
-//   estateTypeId String     @db.ObjectId
+  estateType   EstateType @relation(fields: [estateTypeId], references: [id])
+  estateTypeId String     @db.ObjectId
 
-//   feature   Feature @relation(fields: [featureId], references: [id])
-//   featureId String  @db.ObjectId
+  feature   Feature @relation(fields: [featureId], references: [id])
+  featureId String  @db.ObjectId
 
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
 
 model EstateType {
   id   String @id @default(auto()) @map("_id") @db.ObjectId
   name String
 
-  // features EstateTypeFeature[]
-  estates Estate[]
+  features EstateTypeFeature[]
+  estates  Estate[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

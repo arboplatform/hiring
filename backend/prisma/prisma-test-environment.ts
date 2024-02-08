@@ -16,15 +16,13 @@ export default class PrismaTestEnvironment extends NodeEnvironment {
   private connectionString: string;
 
   constructor(config: JestEnvironmentConfig, context: EnvironmentContext) {
-    console.log(config, context);
-
     super(config, context);
 
     const dbHost = process.env.DATABASE_HOST;
     const dbPort = process.env.DATABASE_PORT;
     const dbName = `test_${uuid()}`;
 
-    this.connectionString = `mongodb://${dbHost}:${dbPort}/${dbName}`;
+    this.connectionString = `mongodb://${dbHost}:${dbPort}/${dbName}?authSource=admin`;
   }
 
   async setup() {

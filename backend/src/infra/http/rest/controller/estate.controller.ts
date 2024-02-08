@@ -7,6 +7,8 @@ import {
   Post,
   Put,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 
 import { CreateEstateUseCase } from '@application/use-cases/estates/create-estate-use-case';
@@ -15,7 +17,7 @@ import { PageEstatesUseCase } from '@application/use-cases/estates/page-estates-
 import { RemoveEstateUseCase } from '@application/use-cases/estates/remove-estate-use-case';
 
 import { CreateEstateInput } from '../dto/input/estate/create-estate-input';
-import { EditChallengeInput } from '../dto/input/estate/edit-challenge-input';
+import { EditEstateInput } from '../dto/input/estate/edit-challenge-input';
 import { PageEstateInput } from '../dto/input/estate/page-estates-input';
 import { EstateViewModel } from '../view-models/estate.view-model';
 
@@ -29,15 +31,15 @@ export class EstateController {
   ) {}
 
   @Post('/create')
+  @UsePipes(new ValidationPipe({ transform: true }))
   async createEstate(@Body() body: CreateEstateInput) {
-    const data = {
-      ...body,
-      agency: { connect: { id: body.agencyId } },
-      type: { connect: { id: body.typeId } },
-    };
+    const { agencyId, typeId, ...rest } = body;
 
-    delete data.agencyId;
-    delete data.typeId;
+    const data = {
+      ...rest,
+      agency: { connect: { id: agencyId } },
+      type: { connect: { id: typeId } },
+    };
 
     const entity = await this.createEstateUseCase.handle(data);
 
@@ -45,7 +47,8 @@ export class EstateController {
   }
 
   @Put('/edit/:id')
-  async editEstate(@Param('id') id: string, @Body() body: EditChallengeInput) {
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async editEstate(@Param('id') id: string, @Body() body: EditEstateInput) {
     const type = body.typeId ? { connect: { id: body.typeId } } : undefined;
 
     const agency = body.agencyId
@@ -63,6 +66,7 @@ export class EstateController {
   }
 
   @Delete('/remove/:id')
+  @UsePipes(new ValidationPipe({ transform: true }))
   async removeEstate(@Param('id') id: string) {
     const entity = await this.removeEstateUseCase.handle({ id });
 
@@ -70,6 +74,7 @@ export class EstateController {
   }
 
   @Get()
+  @UsePipes(new ValidationPipe({ transform: true }))
   async estates(@Query() query: PageEstateInput) {
     const { offset = 0, limit = 10, ...filter } = query || {};
 

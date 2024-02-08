@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import crypto from 'node:crypto';
 
 export abstract class Entity<T> {
   protected readonly _id: string;

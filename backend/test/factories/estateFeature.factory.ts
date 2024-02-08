@@ -1,5 +1,5 @@
+import { faker } from '@faker-js/faker';
 import { Injectable } from '@nestjs/common';
-import casual from 'casual';
 
 import { EstateFeature } from '@domain/entities/estateFeature';
 
@@ -7,25 +7,24 @@ import { EstateFeatureMapper } from '@infra/database/prisma/mappers/estateFeatur
 import { PrismaService } from '@infra/database/prisma/prisma.service';
 import { EstateFeatureRequest } from '@infra/database/repositories/estateFeature.repository';
 
-type Overrides = Omit<
-  EstateFeatureRequest,
-  'amount' | 'showAmount' | 'featureId'
-> & {
-  amount?: number;
-  showAmount?: boolean;
-};
+import { makeFakeFeature } from './feature.factory';
+
+type Overrides = Partial<EstateFeatureRequest>;
 
 export function makeFakeEstateFeature(data = {} as Overrides) {
-  const { integer, boolean } = casual;
+  const amount = faker.number.int({ min: 1, max: 10 });
+  const boolean = faker.datatype.boolean();
+
+  const feature = makeFakeFeature();
 
   const props: EstateFeatureRequest = {
-    amount: data.amount || integer(1, 10),
+    amount: data.amount || amount,
     showAmount: data.showAmount || boolean,
 
-    featureId: data.feature.id,
-    feature: data.feature,
+    featureId: data.feature?.id || feature.id,
+    feature: data.feature || feature,
 
-    estateId: data.estateId,
+    estateId: data.estateId || '',
   };
 
   const estateFeature = EstateFeature.create(props);
@@ -40,8 +39,17 @@ export class EstateFeatureFactory {
   async makeEstateFeature(data = {} as Overrides): Promise<EstateFeature> {
     const estateFeature = makeFakeEstateFeature(data);
 
-    const { estateId, featureId, ...rest } =
-      EstateFeatureMapper.toInstance(estateFeature);
+    const {
+      estateId,
+      featureId,
+      feature: {
+        categoryId,
+        // eslint-disable-next-line unused-imports/no-unused-vars
+        category: { features, ...category },
+        ...feature
+      },
+      ...rest
+    } = EstateFeatureMapper.toInstance(estateFeature);
 
     await this.prisma.estateFeature.create({
       data: {
@@ -50,7 +58,18 @@ export class EstateFeatureFactory {
           connect: { id: estateId },
         },
         feature: {
-          connect: { id: featureId },
+          connectOrCreate: {
+            where: { id: featureId },
+            create: {
+              ...feature,
+              category: {
+                connectOrCreate: {
+                  where: { id: categoryId },
+                  create: category,
+                },
+              },
+            },
+          },
         },
       },
     });

@@ -1,5 +1,5 @@
+import { faker } from '@faker-js/faker';
 import { Injectable } from '@nestjs/common';
-import casual from 'casual';
 
 import { EstateType } from '@domain/entities/estateType';
 
@@ -10,12 +10,15 @@ import { EstateTypeRequest } from '@infra/database/repositories/estateType.repos
 type Overrides = Partial<EstateTypeRequest>;
 
 export function makeFakeEstateType(data = {} as Overrides) {
-  const { random_element } = casual;
+  const name = faker.helpers.arrayElement([
+    'Casa',
+    'Apartamento',
+    'Terreno',
+    'Sobrado',
+  ]);
 
   const props: EstateTypeRequest = {
-    name:
-      data.name ||
-      random_element(['Casa', 'Apartamento', 'Terreno', 'Sobrado']),
+    name: data.name || name,
   };
 
   const estateType = EstateType.create(props);

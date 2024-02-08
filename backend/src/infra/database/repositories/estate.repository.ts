@@ -21,13 +21,14 @@ export type EstateWithoutReferences = Omit<
 export type CreateEstate = Omit<EstateWithoutReferences, 'slug' | 'active'> & {
   agency: { connect: { id: string } };
   type: { connect: { id: string } };
-  features?: FeatureDto[];
   active?: boolean;
 };
 
 export type FilterEstates = Partial<
   Address &
-    Omit<EstateRequest, 'address' | 'prices' | 'features'> & {
+    Omit<EstateWithoutReferences, 'address' | 'prices'> & {
+      agencyId: string;
+      typeId: string;
       'rent.min': number;
       'rent.max': number;
       'sale.min': number;
@@ -41,7 +42,7 @@ export type UpdateEstateRequest = {
   EstateWithoutReferences & {
     agency: { connect: { id: string } };
     type: { connect: { id: string } };
-    features: Partial<FeatureDto>[];
+    features?: FeatureDto[];
   }
 >;
 

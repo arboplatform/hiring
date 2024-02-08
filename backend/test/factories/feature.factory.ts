@@ -1,5 +1,5 @@
+import { faker } from '@faker-js/faker';
 import { Injectable } from '@nestjs/common';
-import casual from 'casual';
 
 import { Feature } from '@domain/entities/feature';
 
@@ -11,48 +11,21 @@ import { makeFakeFeatureCategory } from './featureCategory.factory';
 
 type Overrides = Partial<FeatureRequest>;
 
-type Info = {
-  name: string;
-  singular: string;
-  plural: string;
-  unit?: string;
-};
-
 export function makeFakeFeature(data = {} as Overrides) {
-  const { random_element } = casual;
-
-  const info: Info = random_element([
-    {
-      name: 'Área',
-      singular: 'área',
-      plural: 'áreas',
-      unit: 'm²',
-    },
-    {
-      name: 'Quartos',
-      singular: 'quarto',
-      plural: 'quartos',
-    },
-    {
-      name: 'Banheiros',
-      singular: 'banheiro',
-      plural: 'banheiros',
-    },
-    {
-      name: 'Vagas de garagem',
-      singular: 'vaga',
-      plural: 'vagas',
-    },
-  ]);
+  const name = faker.lorem.words(2);
 
   const category = makeFakeFeatureCategory();
 
   const props: FeatureRequest = {
-    ...info,
+    name: data.name || name,
     active: data.active || true,
 
-    category,
-    categoryId: category.id,
+    singular: data.singular || name.toLowerCase(),
+    plural: data.plural || `${name.toLowerCase()}s`,
+    unit: data.unit || faker.lorem.word(),
+
+    category: data.category || category,
+    categoryId: data.category?.id || category.id,
   };
 
   const feature = Feature.create(props);
@@ -68,13 +41,22 @@ export class FeatureFactory {
     const feature = makeFakeFeature(data);
 
     const instance = FeatureMapper.toInstance(feature);
-    const { categoryId, ...rest } = instance;
+
+    const {
+      categoryId,
+      // eslint-disable-next-line unused-imports/no-unused-vars
+      category: { features, ...category },
+      ...rest
+    } = instance;
 
     await this.prisma.feature.create({
       data: {
         ...rest,
         category: {
-          connect: { id: categoryId },
+          connectOrCreate: {
+            where: { id: categoryId },
+            create: category,
+          },
         },
       },
     });

@@ -15,39 +15,39 @@ export type EstateFeatureRequest = Omit<
 
 // References are given by their IDs
 export type EstateFeatureWithoutReferences = Omit<
-  EstateFeatureProps,
-  'estates'
+  EstateFeatureRequest,
+  'feature'
 >;
 
 export type CreateEstateFeatures = EstateFeatureWithoutReferences;
 
-export type FilterEstateFeatures = Partial<EstateFeatureWithoutReferences>;
+// export type FilterEstateFeatures = Partial<EstateFeatureWithoutReferences>;
 
-export type UpdateEstateFeatureRequest = {
-  id: string;
-} & Partial<EstateFeatureWithoutReferences>;
+// export type UpdateEstateFeatureRequest = {
+//   id: string;
+// } & Partial<EstateFeatureWithoutReferences>;
 
-export type PageEstateFeatures = {
-  filter: FilterEstateFeatures;
-  offset: number;
-  limit: number;
-};
+// export type PageEstateFeatures = {
+//   filter: FilterEstateFeatures;
+//   offset: number;
+//   limit: number;
+// };
 
 @Injectable()
 export abstract class EstateFeatureRepository {
-  abstract countEstateFeatures(filter: FilterEstateFeatures): Promise<number>;
-  abstract pageEstateFeatures(
-    filter: PageEstateFeatures,
-  ): AsyncMaybe<EstateFeature[]>;
+  // abstract countEstateFeatures(filter: FilterEstateFeatures): Promise<number>;
+  // abstract pageEstateFeatures(
+  //   filter: PageEstateFeatures,
+  // ): AsyncMaybe<EstateFeature[]>;
 
   abstract createEstateFeature(
     estateFeature: CreateEstateFeatures,
   ): Promise<EstateFeature>;
-  abstract updateEstateFeature(
-    estateFeature: UpdateEstateFeatureRequest,
-  ): Promise<EstateFeature>;
+  // abstract updateEstateFeature(
+  //   estateFeature: UpdateEstateFeatureRequest,
+  // ): Promise<EstateFeature>;
 
   abstract getEstateFeatureById(id: string): AsyncMaybe<EstateFeature>;
 
-  abstract deleteEstateFeature(id: string): Promise<void>;
+  // abstract deleteEstateFeature(id: string): Promise<void>;
 }

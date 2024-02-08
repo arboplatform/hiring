@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Agency, Estate, EstateFeature, EstateType } from '@prisma/client';
+import { Agency, Estate, EstateType, EstateFeature } from '@prisma/client';
 
 import { AsyncMaybe } from '@core/logic/Maybe';
 
@@ -9,6 +9,7 @@ import {
   EstateInstance,
   EstateMapper,
 } from '@infra/database/prisma/mappers/estate.mapper';
+import { EstateFeatureMapper } from '@infra/database/prisma/mappers/estateFeature.mapper';
 import { AgencyRepository } from '@infra/database/repositories/agency.repository';
 import {
   CreateEstate,
@@ -40,42 +41,29 @@ export class InMemoryEstateRepository implements EstateRepository {
 
   private filterItemsByProps(filter: FilterEstates): EstateWithRelations[] {
     return this.items.filter((estate) => {
-      return estate.name.toLowerCase().includes(filter.name.toLowerCase()) &&
-        estate.description
-          .toLowerCase()
-          .includes(filter.description.toLowerCase()) &&
-        estate.slug.toLowerCase().includes(filter.slug.toLowerCase()) &&
-        filter.active
-        ? estate.active === filter.active
-        : true &&
-            (filter.address.city
-              ? estate.address.city
-                  .toLowerCase()
-                  .includes(filter.address.city.toLowerCase())
-              : true) &&
-            (filter.address.state
-              ? estate.address.state
-                  .toLowerCase()
-                  .includes(filter.address.state.toLowerCase())
-              : true) &&
-            (filter.address.street
-              ? estate.address.street
-                  .toLowerCase()
-                  .includes(filter.address.street.toLowerCase())
-              : true) &&
-            (filter.address.zip
-              ? estate.address.zip.includes(filter.address.zip)
-              : true) &&
-            (filter.prices
-              ? filter.prices.some((price) =>
-                  estate.prices.some(
-                    (estatePrice) =>
-                      estatePrice.type === price.type &&
-                      estatePrice.value >= price.min &&
-                      estatePrice.value <= price.max,
-                  ),
-                )
-              : true);
+      const { prices } = estate;
+
+      const rent = prices.find((price) => price.type === 'RENT');
+      const sale = prices.find((price) => price.type === 'SALE');
+
+      return (
+        (!filter.name || estate.name.includes(filter.name)) &&
+        (!filter.slug || estate.slug.includes(filter.slug)) &&
+        (!filter.description ||
+          estate.description.includes(filter.description)) &&
+        (!filter.active || estate.active === filter.active) &&
+        (!filter['rent.min'] || rent.value >= filter['rent.min']) &&
+        (!filter['rent.max'] || rent.value <= filter['rent.max']) &&
+        (!filter['sale.min'] || sale.value >= filter['sale.min']) &&
+        (!filter['sale.max'] || sale.value <= filter['sale.max']) &&
+        (!filter.typeId || estate.typeId === filter.typeId) &&
+        (!filter.agencyId || estate.agencyId === filter.agencyId) &&
+        (!filter.zip || estate.address.zip.includes(filter.zip)) &&
+        (!filter.street || estate.address.street.includes(filter.street)) &&
+        (!filter.city || estate.address.city.includes(filter.city)) &&
+        (!filter.state || estate.address.state.includes(filter.state)) &&
+        (!filter.number || estate.address.number === filter.number)
+      );
     });
   }
 
@@ -133,12 +121,6 @@ export class InMemoryEstateRepository implements EstateRepository {
       estate.type.connect.id,
     );
 
-    const features = await Promise.all(
-      estate.features.connect.map((feature) =>
-        this.estateFeatureRepository.getEstateFeatureById(feature.id),
-      ),
-    );
-
     const entity = new EstateEntity({
       name: estate.name,
       description: estate.description,
@@ -154,7 +136,7 @@ export class InMemoryEstateRepository implements EstateRepository {
       typeId: estate.type.connect.id,
       type: type,
 
-      features,
+      features: [],
 
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -169,8 +151,28 @@ export class InMemoryEstateRepository implements EstateRepository {
 
   async updateEstate(estate: UpdateEstateRequest): Promise<EstateEntity> {
     const index = this.items.findIndex((item) => item.id === estate.id);
-
     const instance = this.items[index];
+
+    const agency = await this.agencyRepository.getAgencyById(
+      estate.agency?.connect?.id || instance.agencyId,
+    );
+
+    const type = await this.estateTypeRepository.getEstateTypeById(
+      estate.type?.connect?.id || instance.typeId,
+    );
+
+    const estateFeatureEntities = await Promise.all(
+      estate.features?.map((estateFeature) =>
+        this.estateFeatureRepository.createEstateFeature({
+          ...estateFeature,
+          estateId: estate.id,
+        }),
+      ) || [],
+    );
+
+    const estateFeature = estateFeatureEntities.map(
+      EstateFeatureMapper.toInstance,
+    );
 
     this.items[index] = {
       ...instance,
@@ -179,8 +181,11 @@ export class InMemoryEstateRepository implements EstateRepository {
       active: estate.active ?? instance.active,
       address: estate.address || instance.address,
       prices: estate.prices || instance.prices,
+      agency,
       agencyId: estate.agency?.connect?.id || instance.agencyId,
+      type,
       typeId: estate.type?.connect?.id || instance.typeId,
+      features: estateFeature.length ? estateFeature : instance.features,
       updatedAt: new Date(),
     };
 
@@ -193,7 +198,6 @@ export class InMemoryEstateRepository implements EstateRepository {
     const index = this.items.findIndex((item) => item.id === id);
 
     const estate = this.items[index];
-
     this.items.splice(index, 1);
 
     const instance = await this.getInstanceWithRelations(estate);

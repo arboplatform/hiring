@@ -1,5 +1,5 @@
+import { faker } from '@faker-js/faker';
 import { Injectable } from '@nestjs/common';
-import casual from 'casual';
 
 import { FeatureCategory } from '@domain/entities/featureCategory';
 
@@ -7,14 +7,13 @@ import { FeatureCategoryMapper } from '@infra/database/prisma/mappers/featureCat
 import { PrismaService } from '@infra/database/prisma/prisma.service';
 import { FeatureCategoryRequest } from '@infra/database/repositories/featureCategory.repository';
 
-type Overrides = Partial<FeatureCategoryRequest>;
+type Overrides = Partial<Omit<FeatureCategoryRequest, 'features'>>;
 
 export function makeFakeFeatureCategory(data = {} as Overrides) {
-  const { random_value } = casual;
+  const name = faker.lorem.words({ min: 1, max: 3 });
 
   const props: FeatureCategoryRequest = {
-    name: data.name || random_value(['Geral', 'Condomínio', 'Imóvel']),
-    features: data.features || [],
+    name: data.name || name,
   };
 
   const featureCategory = FeatureCategory.create(props);
@@ -28,18 +27,13 @@ export class FeatureCategoryFactory {
 
   async makeFeatureCategory(data = {} as Overrides): Promise<FeatureCategory> {
     const featureCategory = makeFakeFeatureCategory(data);
-    const category = FeatureCategoryMapper.toInstance(featureCategory);
+    const instance = FeatureCategoryMapper.toInstance(featureCategory);
+
+    // eslint-disable-next-line unused-imports/no-unused-vars
+    const { features, ...rest } = instance;
 
     await this.prisma.featureCategory.create({
-      data: {
-        ...category,
-        features: {
-          connectOrCreate: category.features.map((feature) => ({
-            where: { id: feature.id },
-            create: feature,
-          })),
-        },
-      },
+      data: rest,
     });
 
     return featureCategory;

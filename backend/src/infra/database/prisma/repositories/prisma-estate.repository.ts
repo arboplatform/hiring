@@ -35,22 +35,10 @@ export class PrismaEstateRepository implements EstateRepository {
     // TODO: add possibility to create own slug
     const slug = estate.name.toLowerCase().replace(/ /g, '-');
 
-    const features = estate.features
-      ? {
-          createMany: {
-            data: estate.features,
-          },
-        }
-      : undefined;
-
     const instance = await this.prisma.estate
       .create({
         include: { agency: true, type: true, features: true },
-        data: {
-          ...estate,
-          slug,
-          features,
-        },
+        data: { ...estate, slug },
       })
       .catch((e: Prisma.PrismaClientKnownRequestError) => {
         throw new PrismaError(e.code).getError();
@@ -62,23 +50,36 @@ export class PrismaEstateRepository implements EstateRepository {
   }
 
   async updateEstate(estate: UpdateEstateRequest): Promise<EstateEntity> {
-    const { id, ...data } = estate;
+    const { id, features = [], ...data } = estate;
 
-    const features = estate.features
-      ? {
-          updateMany: {
-            where: { estateId: estate.id },
-            data: estate.features,
-          },
-        }
-      : undefined;
+    const allFeatures = await this.prisma.estateFeature.findMany({
+      select: { id: true, featureId: true },
+      where: { estateId: id },
+    });
+
+    const filtersToDelete = allFeatures.filter(
+      (feature) =>
+        !features.some(({ featureId }) => featureId === feature.featureId),
+    );
 
     const instance = await this.prisma.estate.update({
       include: { agency: true, type: true, features: true },
       where: { id },
       data: {
         ...data,
-        features,
+        features: {
+          upsert: features.map((feature) => ({
+            where: {
+              UniqueEstateFeature: {
+                estateId: id,
+                featureId: feature.featureId,
+              },
+            },
+            create: feature,
+            update: feature,
+          })),
+          deleteMany: filtersToDelete.map((feature) => ({ id: feature.id })),
+        },
       },
     });
 
@@ -157,15 +158,9 @@ export class PrismaEstateRepository implements EstateRepository {
 
     return this.prisma.estate.count({
       where: {
-        name: {
-          contains: filter.name,
-        },
-        slug: {
-          contains: filter.slug,
-        },
-        description: {
-          contains: filter.description,
-        },
+        name: { contains: filter.name },
+        slug: { contains: filter.slug },
+        description: { contains: filter.description },
         active: filter.active,
 
         agencyId: filter.agencyId,
@@ -177,16 +172,21 @@ export class PrismaEstateRepository implements EstateRepository {
   }
 
   async deleteEstate(id: string): Promise<EstateEntity> {
-    await this.prisma.estateFeature.deleteMany({
+    const estateFeatures = await this.prisma.estateFeature.findMany({
       where: { estateId: id },
     });
+
+    await this.prisma.estateFeature.deleteMany({ where: { estateId: id } });
 
     const estate = await this.prisma.estate.delete({
       include: { agency: true, type: true, features: true },
       where: { id },
     });
 
-    const estateInstance = await this.getInstanceWithRelations(estate);
+    const estateInstance = await this.getInstanceWithRelations({
+      ...estate,
+      features: estateFeatures,
+    });
 
     return EstateMapper.toEntity(estateInstance);
   }
