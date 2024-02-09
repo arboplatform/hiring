@@ -13,7 +13,7 @@ import { Feature, FeatureProps } from '@domain/entities/feature';
 export type FeatureRequest = Omit<FeatureProps, 'createdAt' | 'updatedAt'>;
 
 // References are given by their IDs
-export type FeatureWithoutReferences = Omit<FeatureProps, 'estates'>;
+export type FeatureWithoutReferences = Omit<FeatureProps, 'category'>;
 
 // export type CreateFeatures = FeatureWithoutReferences;
 
@@ -31,8 +31,8 @@ export type PageFeatures = {
 
 @Injectable()
 export abstract class FeatureRepository {
-  // abstract countFeatures(filter: FilterFeatures): Promise<number>;
-  // abstract pageFeatures(filter: PageFeatures): AsyncMaybe<Feature[]>;
+  abstract countFeatures(filter: FilterFeatures): Promise<number>;
+  abstract pageFeatures(filter: PageFeatures): AsyncMaybe<Feature[]>;
 
   // abstract createFeature(feature: CreateFeatures): Promise<Feature>;
   // abstract updateFeature(feature: UpdateFeatureRequest): Promise<Feature>;
