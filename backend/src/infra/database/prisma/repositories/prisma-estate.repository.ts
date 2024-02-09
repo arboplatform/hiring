@@ -1,11 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  Agency,
-  Estate,
-  EstateFeature,
-  EstateType,
-  Prisma,
-} from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
 import { AsyncMaybe } from '@core/logic/Maybe';
 
@@ -18,18 +12,14 @@ import {
   CreateEstate,
   UpdateEstateRequest,
 } from '@infra/database/repositories/estate.repository';
-import { FeatureRepository } from '@infra/database/repositories/feature.repository';
 
 import { PrismaError } from '../errors/prisma-error';
-import { EstateInstance, EstateMapper } from '../mappers/estate.mapper';
+import { EstateMapper } from '../mappers/estate.mapper';
 import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class PrismaEstateRepository implements EstateRepository {
-  constructor(
-    private prisma: PrismaService,
-    private featureRepository: FeatureRepository,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
   async createEstate(estate: CreateEstate): Promise<EstateEntity> {
     // TODO: add possibility to create own slug
@@ -37,16 +27,24 @@ export class PrismaEstateRepository implements EstateRepository {
 
     const instance = await this.prisma.estate
       .create({
-        include: { agency: true, type: true, features: true },
+        include: {
+          agency: true,
+          type: true,
+          features: {
+            include: {
+              feature: {
+                include: { category: true },
+              },
+            },
+          },
+        },
         data: { ...estate, slug },
       })
       .catch((e: Prisma.PrismaClientKnownRequestError) => {
         throw new PrismaError(e.code).getError();
       });
 
-    const estateInstance = await this.getInstanceWithRelations(instance);
-
-    return EstateMapper.toEntity(estateInstance);
+    return EstateMapper.toEntity(instance);
   }
 
   async updateEstate(estate: UpdateEstateRequest): Promise<EstateEntity> {
@@ -63,7 +61,17 @@ export class PrismaEstateRepository implements EstateRepository {
     );
 
     const instance = await this.prisma.estate.update({
-      include: { agency: true, type: true, features: true },
+      include: {
+        agency: true,
+        type: true,
+        features: {
+          include: {
+            feature: {
+              include: { category: true },
+            },
+          },
+        },
+      },
       where: { id },
       data: {
         ...data,
@@ -83,35 +91,49 @@ export class PrismaEstateRepository implements EstateRepository {
       },
     });
 
-    const estateInstance = await this.getInstanceWithRelations(instance);
-
-    return EstateMapper.toEntity(estateInstance);
+    return EstateMapper.toEntity(instance);
   }
 
   async getEstateById(id: string) {
     const estate = await this.prisma.estate.findUnique({
-      include: { agency: true, type: true, features: true },
+      include: {
+        agency: true,
+        type: true,
+        features: {
+          include: {
+            feature: {
+              include: { category: true },
+            },
+          },
+        },
+      },
       where: { id },
     });
 
     if (!estate) return null;
 
-    const estateInstance = await this.getInstanceWithRelations(estate);
-
-    return EstateMapper.toEntity(estateInstance);
+    return EstateMapper.toEntity(estate);
   }
 
   async getEstateBySlug(slug: string): AsyncMaybe<EstateEntity> {
     const estate = await this.prisma.estate.findUnique({
-      include: { agency: true, type: true, features: true },
+      include: {
+        agency: true,
+        type: true,
+        features: {
+          include: {
+            feature: {
+              include: { category: true },
+            },
+          },
+        },
+      },
       where: { slug },
     });
 
     if (!estate) return null;
 
-    const estateInstance = await this.getInstanceWithRelations(estate);
-
-    return EstateMapper.toEntity(estateInstance);
+    return EstateMapper.toEntity(estate);
   }
 
   async pageEstates({
@@ -122,7 +144,17 @@ export class PrismaEstateRepository implements EstateRepository {
     const prices = this.getPrices(filter);
 
     const estateFound = await this.prisma.estate.findMany({
-      include: { agency: true, type: true, features: true },
+      include: {
+        agency: true,
+        type: true,
+        features: {
+          include: {
+            feature: {
+              include: { category: true },
+            },
+          },
+        },
+      },
       where: {
         name: {
           contains: filter.name,
@@ -146,11 +178,7 @@ export class PrismaEstateRepository implements EstateRepository {
 
     if (!estateFound.length) return null;
 
-    const estatesInstance = await Promise.all(
-      estateFound.map(this.getInstanceWithRelations),
-    );
-
-    return estatesInstance.map(EstateMapper.toEntity);
+    return estateFound.map(EstateMapper.toEntity);
   }
 
   countEstates(filter: FilterEstates): Promise<number> {
@@ -173,44 +201,26 @@ export class PrismaEstateRepository implements EstateRepository {
 
   async deleteEstate(id: string): Promise<EstateEntity> {
     const estateFeatures = await this.prisma.estateFeature.findMany({
+      include: {
+        feature: {
+          include: { category: true },
+        },
+      },
       where: { estateId: id },
     });
 
     await this.prisma.estateFeature.deleteMany({ where: { estateId: id } });
 
     const estate = await this.prisma.estate.delete({
-      include: { agency: true, type: true, features: true },
+      include: { agency: true, type: true },
       where: { id },
     });
 
-    const estateInstance = await this.getInstanceWithRelations({
+    return EstateMapper.toEntity({
       ...estate,
       features: estateFeatures,
     });
-
-    return EstateMapper.toEntity(estateInstance);
   }
-
-  private getInstanceWithRelations = async (
-    instance: Estate & {
-      agency: Agency;
-      type: EstateType;
-      features: EstateFeature[];
-    },
-  ): Promise<EstateInstance> => {
-    const featurePromises = instance.features.map((featureEstate) =>
-      this.featureRepository
-        .getFeatureById(featureEstate.featureId)
-        .then((feature) => ({ ...featureEstate, feature })),
-    );
-
-    const features = await Promise.all(featurePromises);
-
-    return {
-      ...instance,
-      features,
-    };
-  };
 
   private getPrices(filter: FilterEstates) {
     const pricesFilter = Object.entries(filter).reduce(

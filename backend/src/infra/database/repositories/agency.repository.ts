@@ -13,26 +13,26 @@ import { Agency, AgencyProps } from '@domain/entities/agency';
 export type AgencyRequest = Omit<AgencyProps, 'createdAt' | 'updatedAt'>;
 
 // References are given by their IDs
-// export type AgencyWithoutReferences = Omit<AgencyProps, ''>;
+export type AgencyWithoutReferences = AgencyRequest;
 
 // export type CreateAgencies = AgencyWithoutReferences;
 
-// export type FilterAgencies = Partial<AgencyWithoutReferences>;
+export type FilterAgencies = Partial<AgencyWithoutReferences>;
 
 // export type UpdateAgencyRequest = {
 //   id: string;
 // } & Partial<AgencyWithoutReferences>;
 
-// export type PageAgencies = {
-//   filter: FilterAgencies;
-//   offset: number;
-//   limit: number;
-// };
+export type PageAgencies = {
+  filter: FilterAgencies;
+  offset: number;
+  limit: number;
+};
 
 @Injectable()
 export abstract class AgencyRepository {
-  // abstract countAgencies(filter: FilterAgencies): Promise<number>;
-  // abstract pageAgencies(filter: PageAgencies): AsyncMaybe<Agency[]>;
+  abstract countAgencies(filter: FilterAgencies): Promise<number>;
+  abstract pageAgencies(filter: PageAgencies): AsyncMaybe<Agency[]>;
 
   // abstract createAgency(agency: CreateAgencies): Promise<Agency>;
   // abstract updateAgency(agency: UpdateAgencyRequest): Promise<Agency>;

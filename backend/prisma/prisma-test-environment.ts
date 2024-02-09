@@ -37,6 +37,7 @@ export default class PrismaTestEnvironment extends NodeEnvironment {
   async teardown() {
     await mongoose.connect(this.connectionString);
     await mongoose.connection.db.dropDatabase();
-    mongoose.connection.close();
+
+    return mongoose.connection.close();
   }
 }

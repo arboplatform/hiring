@@ -16,7 +16,7 @@ export type EstateTypeRequest = Omit<
 >;
 
 // References are given by their IDs
-export type EstateTypeWithoutReferences = Omit<EstateTypeProps, 'features'>;
+export type EstateTypeWithoutReferences = Omit<EstateTypeRequest, 'features'>;
 
 // export type CreateEstateTypes = EstateTypeWithoutReferences;
 
