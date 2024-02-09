@@ -5,13 +5,23 @@ import { EstateType } from '@prisma/client';
 import { EstateType as EstateTypeEntity } from '@domain/entities/estateType';
 
 import { EstateTypeMapper } from '@infra/database/prisma/mappers/estateType.mapper';
-import { EstateTypeRepository } from '@infra/database/repositories/estateType.repository';
+import {
+  EstateTypeRepository,
+  FilterEstateTypes,
+  PageEstateTypes,
+} from '@infra/database/repositories/estateType.repository';
 
 @Injectable()
 export class InMemoryEstateTypeRepository implements EstateTypeRepository {
   private items: EstateType[] = [];
 
   constructor() {}
+
+  private filterItemsByProps(filter: FilterEstateTypes): EstateType[] {
+    return this.items.filter((estateType) => {
+      return !filter.name || estateType.name.includes(filter.name);
+    });
+  }
 
   async getEstateTypeById(id: string) {
     await this.createEstateType(id);
@@ -23,7 +33,21 @@ export class InMemoryEstateTypeRepository implements EstateTypeRepository {
     return EstateTypeMapper.toEntity(estateType);
   }
 
-  private createEstateType = async (id: string) => {
+  async pageEstateTypes({ filter, limit, offset }: PageEstateTypes) {
+    await this.createEstateType();
+
+    const items = this.filterItemsByProps(filter).slice(offset, offset + limit);
+
+    if (!items.length) return null;
+
+    return items.map(EstateTypeMapper.toEntity);
+  }
+
+  async countEstateTypes(filter: FilterEstateTypes) {
+    return this.filterItemsByProps(filter).length;
+  }
+
+  private createEstateType = async (id?: string) => {
     const inital = EstateTypeEntity.create({
       name: faker.company.name(),
     });

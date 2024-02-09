@@ -16,26 +16,26 @@ export type EstateTypeRequest = Omit<
 >;
 
 // References are given by their IDs
-export type EstateTypeWithoutReferences = Omit<EstateTypeProps, 'estates'>;
+export type EstateTypeWithoutReferences = Omit<EstateTypeProps, 'features'>;
 
 // export type CreateEstateTypes = EstateTypeWithoutReferences;
 
-// export type FilterEstateTypes = Partial<EstateTypeWithoutReferences>;
+export type FilterEstateTypes = Partial<EstateTypeWithoutReferences>;
 
 // export type UpdateEstateTypeRequest = {
 //   id: string;
 // } & Partial<EstateTypeWithoutReferences>;
 
-// export type PageEstateTypes = {
-//   filter: FilterEstateTypes;
-//   offset: number;
-//   limit: number;
-// };
+export type PageEstateTypes = {
+  filter: FilterEstateTypes;
+  offset: number;
+  limit: number;
+};
 
 @Injectable()
 export abstract class EstateTypeRepository {
-  // abstract countEstateTypes(filter: FilterEstateTypes): Promise<number>;
-  // abstract pageEstateTypes(filter: PageEstateTypes): AsyncMaybe<EstateType[]>;
+  abstract countEstateTypes(filter: FilterEstateTypes): Promise<number>;
+  abstract pageEstateTypes(filter: PageEstateTypes): AsyncMaybe<EstateType[]>;
 
   // abstract createEstateType(estateType: CreateEstateTypes): Promise<EstateType>;
   // abstract updateEstateType(estateType: UpdateEstateTypeRequest): Promise<EstateType>;
