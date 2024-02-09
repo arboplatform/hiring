@@ -188,7 +188,7 @@ describe('Estate Controller (e2e)', () => {
       city: 'New City',
       state: 'New State',
       number: 123,
-      zip: 'New Zip',
+      zip: '12345-678',
     };
 
     const prices = [
@@ -396,5 +396,34 @@ describe('Estate Controller (e2e)', () => {
     expect(response.body.nodes).toEqual(
       expect.arrayContaining([responseEstate]),
     );
+  });
+
+  it('(GET) EstateBySlug', async () => {
+    const estate = await estateFactory.makeEstate();
+
+    const response = await request(app.getHttpServer())
+      .get(`/estates/${estate.slug}`)
+      .send()
+      .expect(200);
+
+    const estatesFixed = new Estate(
+      {
+        ...estate.props,
+        features: estate.features.map((estateFeature): EstateFeature => {
+          return new EstateFeature(
+            { ...estateFeature.props, estateId: estate.id },
+            estateFeature.id,
+          );
+        }),
+      },
+      estate.id,
+    );
+
+    const responseEstate = {
+      ...EstateViewModel.toResponse(estatesFixed),
+      createdAt: estate.createdAt.toISOString(),
+    };
+
+    expect(response.body).toEqual(expect.objectContaining(responseEstate));
   });
 });

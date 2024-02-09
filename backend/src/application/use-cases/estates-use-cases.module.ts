@@ -8,6 +8,7 @@ import { FeatureRepository } from '@infra/database/repositories/feature.reposito
 
 import { CreateEstateUseCase } from './estates/create-estate-use-case';
 import { EditEstateUseCase } from './estates/edit-estate-use-case';
+import { GetEstateBySlugUseCase } from './estates/get-estate-by-slug-use-case';
 import { PageEstatesUseCase } from './estates/page-estates-use-case';
 import { RemoveEstateUseCase } from './estates/remove-estate-use-case';
 
@@ -26,12 +27,14 @@ import { RemoveEstateUseCase } from './estates/remove-estate-use-case';
     EditEstateUseCase,
     RemoveEstateUseCase,
     PageEstatesUseCase,
+    GetEstateBySlugUseCase,
   ],
   exports: [
     CreateEstateUseCase,
     EditEstateUseCase,
     RemoveEstateUseCase,
     PageEstatesUseCase,
+    GetEstateBySlugUseCase,
   ],
 })
 export class EstatesUseCasesModule {}

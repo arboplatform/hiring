@@ -13,6 +13,7 @@ import {
 
 import { CreateEstateUseCase } from '@application/use-cases/estates/create-estate-use-case';
 import { EditEstateUseCase } from '@application/use-cases/estates/edit-estate-use-case';
+import { GetEstateBySlugUseCase } from '@application/use-cases/estates/get-estate-by-slug-use-case';
 import { PageEstatesUseCase } from '@application/use-cases/estates/page-estates-use-case';
 import { RemoveEstateUseCase } from '@application/use-cases/estates/remove-estate-use-case';
 
@@ -28,6 +29,7 @@ export class EstateController {
     private editEstateUseCase: EditEstateUseCase,
     private removeEstateUseCase: RemoveEstateUseCase,
     private pageEstateUseCase: PageEstatesUseCase,
+    private getEstateBySlugUseCase: GetEstateBySlugUseCase,
   ) {}
 
   @Post('/create')
@@ -49,17 +51,12 @@ export class EstateController {
   @Put('/edit/:id')
   @UsePipes(new ValidationPipe({ transform: true }))
   async editEstate(@Param('id') id: string, @Body() body: EditEstateInput) {
-    const type = body.typeId ? { connect: { id: body.typeId } } : undefined;
+    const { agencyId, typeId, ...rest } = body;
 
-    const agency = body.agencyId
-      ? { connect: { id: body.agencyId } }
-      : undefined;
+    const type = typeId ? { connect: { id: typeId } } : undefined;
+    const agency = agencyId ? { connect: { id: agencyId } } : undefined;
 
-    const data = { id, ...body, type, agency };
-
-    delete data.agencyId;
-    delete data.typeId;
-
+    const data = { id, ...rest, type, agency };
     const entity = await this.editEstateUseCase.handle(data);
 
     return EstateViewModel.toResponse(entity);
@@ -88,5 +85,13 @@ export class EstateController {
       ...result,
       nodes: result.nodes ? result.nodes.map(EstateViewModel.toResponse) : null,
     };
+  }
+
+  @Get('/:slug')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async estateBySlug(@Param('slug') slug: string) {
+    const entity = await this.getEstateBySlugUseCase.handle({ slug });
+
+    return EstateViewModel.toResponse(entity);
   }
 }

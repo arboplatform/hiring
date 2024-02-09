@@ -12,7 +12,7 @@ import { makeFakeFeatureCategory } from './featureCategory.factory';
 type Overrides = Partial<FeatureRequest>;
 
 export function makeFakeFeature(data = {} as Overrides) {
-  const name = faker.lorem.words(2);
+  const name = faker.lorem.words({ min: 1, max: 3 });
 
   const category = makeFakeFeatureCategory();
 

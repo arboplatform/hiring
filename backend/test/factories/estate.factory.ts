@@ -6,7 +6,7 @@ import { Estate } from '@domain/entities/estate';
 import { EstateMapper } from '@infra/database/prisma/mappers/estate.mapper';
 import { PrismaService } from '@infra/database/prisma/prisma.service';
 import { EstateRequest } from '@infra/database/repositories/estate.repository';
-import { Price, PriceType } from '@infra/http/rest/dto/enum/price';
+import { PriceType } from '@infra/http/rest/dto/enum/price';
 
 import { makeFakeAgency } from './agency.factory';
 import { makeFakeEstateFeature } from './estateFeature.factory';
@@ -29,11 +29,15 @@ export function makeFakeEstate(data = {} as Overrides) {
   const agency = makeFakeAgency();
 
   const prices = [
-    ...new Array<Price>(faker.number.int({ min: 1, max: 2 })),
-  ].map(() => ({
-    value: Number(faker.finance.amount({ min: 1000, max: 1000000 })),
-    type: faker.helpers.arrayElement(Object.values(PriceType)),
-  }));
+    {
+      value: Number(faker.finance.amount({ min: 1000, max: 5000 })),
+      type: PriceType.RENT,
+    },
+    {
+      value: Number(faker.finance.amount({ min: 500000, max: 1000000 })),
+      type: PriceType.SALE,
+    },
+  ];
 
   const estateFeatures = [...new Array(2)].map(() => makeFakeEstateFeature());
 
