@@ -116,7 +116,7 @@ describe('Remove Estate UseCase', () => {
     });
 
     await expect(response).rejects.toThrow(
-      new Error('Estate not found') as UseCaseError,
+      new Error('Imóvel não encontrado') as UseCaseError,
     );
   });
 });

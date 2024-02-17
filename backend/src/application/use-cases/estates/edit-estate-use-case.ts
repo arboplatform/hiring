@@ -22,7 +22,7 @@ export class EditEstateUseCase {
     const foundEstate = await this.estateRepository.getEstateById(id);
 
     if (!foundEstate) {
-      throw new Error('Estate not found') as UseCaseError;
+      throw new Error('Imóvel não encontrado') as UseCaseError;
     }
 
     const filterRent = filters.prices?.filter((price) => price.type === 'RENT');
@@ -30,7 +30,7 @@ export class EditEstateUseCase {
 
     if (filterRent?.length > 1 || filterSale?.length > 1) {
       throw new Error(
-        'You can only have one price for rent and sale',
+        'Você só pode ter um preço para aluguel e venda',
       ) as UseCaseError;
     }
 

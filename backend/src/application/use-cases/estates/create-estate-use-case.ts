@@ -24,7 +24,7 @@ export class CreateEstateUseCase {
 
     if (rent.length > 1 || sale.length > 1) {
       throw new Error(
-        'You can only have one price for rent and sale',
+        'Você só pode ter um preço para aluguel e venda',
       ) as UseCaseError;
     }
 

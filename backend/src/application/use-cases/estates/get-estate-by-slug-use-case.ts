@@ -22,7 +22,7 @@ export class GetEstateBySlugUseCase {
     const estate = await this.estateRepository.getEstateBySlug(slug);
 
     if (!estate) {
-      throw new Error('Estate not found') as UseCaseError;
+      throw new Error('Imóvel não encontrado') as UseCaseError;
     }
 
     return estate;

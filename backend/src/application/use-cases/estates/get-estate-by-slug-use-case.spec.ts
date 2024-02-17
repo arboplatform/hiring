@@ -128,7 +128,7 @@ describe('Get Estate by slug UseCase', () => {
     const request = getEstateBySlugUseCase.handle({ slug });
 
     await expect(request).rejects.toThrow(
-      new Error('Estate not found') as UseCaseError,
+      new Error('Imóvel não encontrado') as UseCaseError,
     );
   });
 });

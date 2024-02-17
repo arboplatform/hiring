@@ -20,7 +20,7 @@ export class RemoveEstateUseCase {
     const foundEstate = await this.estateRepository.getEstateById(id);
 
     if (!foundEstate) {
-      throw new Error('Estate not found') as UseCaseError;
+      throw new Error('Imóvel não encontrado') as UseCaseError;
     }
 
     return this.estateRepository.deleteEstate(id);
