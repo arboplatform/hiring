@@ -58,7 +58,7 @@ $ cd hiring/frontend
 $ npm i
 
 # Run website with next.js
-$ npm dev
+$ npm run dev
 ```
 
 ## :memo: License
