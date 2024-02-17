@@ -1,0 +1,42 @@
+PUT http://localhost:3333/estates/edit/65c4080e147bb7259c46f11e HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Outro título para a Nova Casa a venda em Paraná",
+  "description": "Nova descrição para a Casa com 3 quartos, 2 banheiros, 1 vaga de garagem",
+
+  "address": {
+    "street": "Rua das Árvores",
+    "number": 456,
+    "state": "SP",
+    "city": "Londrina",
+    "zip": "09876-543"
+  },
+
+  "prices": [
+    {
+      "value": 2000000,
+      "type": "SALE"
+    },
+    {
+      "value": 3000,
+      "type": "RENT"
+    }
+  ],
+
+  "features": [
+    {
+      "featureId": "65c16ef1cd3c172e39838f90",
+      "amount": 600,
+      "showAmount": true
+    },
+    {
+      "featureId": "65c16ef1cd3c172e39838f91",
+      "amount": 2,
+      "showAmount": true
+    }
+  ],
+
+  "agencyId": "65c16ef26749e2450ccaf0ed",
+  "typeId": "65c16ef1cd3c172e39838f89"
+}

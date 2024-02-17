@@ -1,0 +1,47 @@
+POST http://localhost:3333/estates/create HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Nova Casa a venda em São Paulo",
+  "description": "Casa com 3 quartos, 2 banheiros, 1 vaga de garagem",
+
+  "address": {
+    "street": "Rua das Flores",
+    "number": 123,
+    "state": "SP",
+    "city": "São Paulo",
+    "zip": "12345-678"
+  },
+
+  "prices": [
+    {
+      "value": 1000000,
+      "type": "SALE"
+    },
+    {
+      "value": 2000,
+      "type": "RENT"
+    }
+  ],
+
+  "features": [
+    {
+      "featureId": "65c16ef1cd3c172e39838f90",
+      "amount": 500,
+      "showAmount": true
+    },
+    {
+      "featureId": "65c16ef1cd3c172e39838f91",
+      "amount": 3,
+      "showAmount": true
+    },
+    {
+      "featureId": "65c16ef1cd3c172e39838f96",
+      "amount": 1,
+      "showAmount": false
+    }
+  ],
+
+  "agencyId": "65c16ef26749e2450ccaf0ed",
+  "typeId": "65c16ef1cd3c172e39838f89"
+}

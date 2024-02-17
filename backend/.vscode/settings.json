@@ -1,0 +1,14 @@
+{
+  "material-icon-theme.files.associations": {
+    "*.module.ts": "nest-module",
+    "*.service.ts": "nest-service",
+    "*.controller.ts": "nest-controller"
+  },
+  "conventionalCommits.scopes": [
+    "domain",
+    "database",
+    "application",
+    "infra",
+    "test"
+  ]
+}

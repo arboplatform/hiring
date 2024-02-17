@@ -1,0 +1,50 @@
+version: '3.8'
+
+name: arbo-prisma
+
+# For connection urls to the following instances, see
+# https://github.com/prisma/prisma/blob/main/TESTING.md#environment-variables
+services:
+  # This config is for MongoDB v4
+  # It's a Replica Set (required for Prisma Client)
+  mongo:
+    build:
+      context: ./docker/mongodb_replica
+      args:
+        MONGO_VERSION: 4
+    environment:
+      MONGO_REPLICA_HOST: localhost
+      MONGO_REPLICA_PORT: 27017
+      MONGO_INITDB_DATABASE: arbo
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: pass
+      # Use "mongo" instead of "mongosh" before v5.0
+      MONGO_COMMAND: 'mongo'
+    ports:
+      - '27017:27017'
+    restart: unless-stopped
+    healthcheck:
+      # Use "mongo" instead of "mongosh" before v5.0
+      test: ['CMD', 'mongo', 'admin', '--port', '27017', '--eval', "db.adminCommand('ping').ok"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+
+  # mongodb_migrate:
+  #   image: mongo:4
+  #   restart: unless-stopped
+  #   environment:
+  #     MONGO_INITDB_DATABASE: arbo
+  #   ports:
+  #     - '27017:27017'
+  #   healthcheck:
+  #     # Use "mongo" instead of "mongosh" before v5.0
+  #     test: ['CMD', 'mongo', 'admin', '--port', '27017', '--eval', "db.adminCommand('ping').ok"]
+  #     interval: 5s
+  #     timeout: 2s
+  #     retries: 20
+
+  # mongodb_migrate_seed:
+  #   build: ./docker/mongodb_migrate_seed
+  #   depends_on:
+  #     - mongodb_migrate

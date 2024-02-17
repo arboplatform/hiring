@@ -1,0 +1,135 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "binary"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Agency {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+
+  estates Estate[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Estate {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String  @unique
+  name        String
+  description String
+  active      Boolean @default(true)
+  address     Address
+
+  agency   Agency @relation(fields: [agencyId], references: [id])
+  agencyId String @db.ObjectId
+
+  type   EstateType @relation(fields: [typeId], references: [id])
+  typeId String     @db.ObjectId
+
+  prices   Price[]
+  features EstateFeature[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+type Price {
+  value Float
+  type  PriceType
+}
+
+enum PriceType {
+  SALE
+  RENT
+}
+
+type Address {
+  street String
+  city   String
+  number Int
+  state  String
+  zip    String
+}
+
+model EstateFeature {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  amount     Int     @default(1)
+  showAmount Boolean @default(false)
+
+  estate   Estate @relation(fields: [estateId], references: [id])
+  estateId String @db.ObjectId
+
+  feature   Feature @relation(fields: [featureId], references: [id])
+  featureId String  @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([estateId, featureId], name: "UniqueEstateFeature")
+}
+
+model Feature {
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  name   String  @unique
+  active Boolean @default(true)
+
+  singular String
+  plural   String
+  unit     String?
+
+  category   FeatureCategory @relation(fields: [categoryId], references: [id])
+  categoryId String          @db.ObjectId
+
+  estateTypes EstateTypeFeature[]
+  estates     EstateFeature[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FeatureCategory {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
+
+  features Feature[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model EstateTypeFeature {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  required Boolean @default(false)
+
+  estateType   EstateType @relation(fields: [estateTypeId], references: [id])
+  estateTypeId String     @db.ObjectId
+
+  feature   Feature @relation(fields: [featureId], references: [id])
+  featureId String  @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model EstateType {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+
+  features EstateTypeFeature[]
+  estates  Estate[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
