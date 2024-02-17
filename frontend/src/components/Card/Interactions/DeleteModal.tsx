@@ -18,7 +18,7 @@ type Props = {
   close: () => void;
 };
 
-export const EstateModal: React.FC<Props> = ({
+export const DeleteModal: React.FC<Props> = ({
   close,
   opened,
   estate: { name, id },

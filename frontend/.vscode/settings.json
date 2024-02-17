@@ -5,5 +5,8 @@
     "**/*.sass",
     "**/*.less",
     "node_modules/@mantine/core/styles.css"
+  ],
+  "conventionalCommits.scopes": [
+    "frontend"
   ]
 }
