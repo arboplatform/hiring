@@ -55,10 +55,12 @@ export class PrismaEstateRepository implements EstateRepository {
       where: { estateId: id },
     });
 
-    const filtersToDelete = allFeatures.filter(
-      (feature) =>
-        !features.some(({ featureId }) => featureId === feature.featureId),
-    );
+    const filtersToDelete = features.length
+      ? allFeatures.filter(
+          (feature) =>
+            !features.some(({ featureId }) => featureId === feature.featureId),
+        )
+      : [];
 
     const instance = await this.prisma.estate.update({
       include: {

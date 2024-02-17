@@ -44,7 +44,6 @@ export class CreateEstateInput {
   prices: Price[];
 
   @IsOptional()
-  @ArrayNotEmpty()
   @ValidateNested({ each: true })
   @Type(() => FeatureDto)
   features?: FeatureDto[];
