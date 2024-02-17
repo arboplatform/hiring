@@ -45,7 +45,7 @@ Here's a exemple by performing a transaction in Insomnia
 
 ## :thinking: How To Use
 
-To get started with the frontend solution, make sure you have [Git](https://git-scm.com), [Node.js][nodejs] (version 20.11.0 or higher). Make sure you have the [backend running](https://github.com/farreltobias/hiring/backend). From your command line:
+To get started with the frontend solution, make sure you have [Git](https://git-scm.com), [Node.js][nodejs] (version 20.11.0 or higher). Make sure you have the [backend running](https://github.com/farreltobias/hiring/tree/main/backend). From your command line:
 
 ```bash
 # Clone this repository
