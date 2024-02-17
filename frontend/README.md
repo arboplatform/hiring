@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h1 align="center">
+  Fontend solution for the hiring process of Arbo's challenge built with Next.js
+</h1>
 
-## Getting Started
+<!-- <p align="center" style="margin-bottom: 4%">
+  <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/farreltobias/hiring.svg">
+  <a href="https://app.codacy.com/gh/farreltobias/hiring/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade">
+    <img src="https://app.codacy.com/project/badge/Grade/994a07271e7b45ab990485e642ccef20"/>
+  </a>
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/farreltobias/hiring.svg">
+  <a href="https://github.com/farreltobias/hiring/commits/main">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/farreltobias/hiring.svg">
+  </a>
+  <a href="https://github.com/farreltobias/hiring/issues">
+    <img alt="Repository issues" src="https://img.shields.io/github/issues/farreltobias/hiring.svg">
+  </a>
+  <img alt="License" src="https://img.shields.io/github/license/farreltobias/financial-api.svg">
+</p> -->
 
-First, run the development server:
+<p align="center">
+  <a href="#information_source-about">About</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <!-- <a href="#muscle-new-features">New Features</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; -->
+  <!-- <a href="#desktop_computer-exemple">Exemple</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; -->
+  <a href="#thinking-how-to-use">How To Use</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#memo-license">License</a>
+</p>
+
+## :information_source: About
+
+The frontend solution for the hiring process of Arbo's challenge is built with [Next.js](https://nextjs.org), [TypeScript](https://www.typescriptlang.org/), and [Mantine](https://mantine.dev/). It is a web application that provides a user-friendly interface for the hiring process.
+
+The website utilizes Next.js, a popular React framework, to enable server-side rendering and efficient routing. TypeScript is used to add static typing and enhance the development experience. Mantine, a modern React UI library, is employed to create beautiful and responsive UI components.
+
+You can check it out using this link: https://arbo-hiring.farrel.tech/.
+
+<!-- ## :muscle: New Features
+
+Added :sparkles:TRANSACTIONS:sparkles: from account to account! -->
+
+<!-- ## :desktop_computer: Exemple
+
+Here's a exemple by performing a transaction in Insomnia
+
+<img src="https://i.imgur.com/g5Y7xHK.gif"/> -->
+
+## :thinking: How To Use
+
+To get started with the frontend solution, make sure you have [Git](https://git-scm.com), [Node.js][nodejs] (version 20.11.0 or higher). Make sure you have the [backend running](https://github.com/farreltobias/hiring/backend). From your command line:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone this repository
+$ git clone https://github.com/farreltobias/hiring hiring
+
+# Go into the repository
+$ cd hiring/frontend
+
+# Install dependencies
+$ npm i
+
+# Run website with next.js
+$ npm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## :memo: License
+This project is licensed under the Apache License. For detailed licensing information, please see the [LICENSE](https://github.com/farreltobias/hiring/blob/main/LICENSE) file.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+For more information about the project and its components, please refer to the [GitHub repository](https://github.com/farreltobias/hiring).
 
-## Learn More
+If you have any questions or need further assistance, feel free to reach out to Guilherme Farrel via [LinkedIn](https://www.linkedin.com/in/farreltobias/).
 
-To learn more about Next.js, take a look at the following resources:
+Made with :yellow_heart: by Guilherme Farrel [Get in touch!](https://www.linkedin.com/in/farreltobias/)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+<a align="center" href="https://farrel.tech">
+  <img style="margin-top: 4%;" src="https://i.imgur.com/IseCjin.jpg"/>
+</a>
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+[nodejs]: https://nodejs.org/
+[pnpm]: https://pnpm.io/
