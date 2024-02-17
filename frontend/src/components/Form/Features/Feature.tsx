@@ -56,7 +56,7 @@ export const Feature: React.FC<Props> = ({ features, feature, index }) => {
         <NumberInput
           label="Quantidade"
           placeholder="Quantidade"
-          min={0}
+          min={1}
           {...form.getInputProps(`features.${index}.amount`)}
         />
       </Grid.Col>

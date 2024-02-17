@@ -30,22 +30,22 @@ type EstateProps = {
 
 // TODO: add these in database
 const icons: { [key: string]: IconName } = {
-  '65c16ef1cd3c172e39838f8f': 'maximize',
-  '65c16ef1cd3c172e39838f90': 'maximize',
-  '65c16ef1cd3c172e39838f91': 'bed',
-  '65c16ef1cd3c172e39838f92': 'toilet-paper',
-  '65c16ef1cd3c172e39838f93': 'car',
-  '65c16ef1cd3c172e39838f94': 'elevator',
-  '65c16ef1cd3c172e39838f95': 'box',
-  '65c16ef1cd3c172e39838f96': 'water-ladder',
-  '65c16ef1cd3c172e39838f97': 'champagne-glasses',
+  'Area útil': 'maximize',
+  'Area total': 'maximize',
+  Quartos: 'bed',
+  Banheiros: 'toilet-paper',
+  'Vagas de garagem': 'car',
+  Elevador: 'elevator',
+  'Armários embutidos': 'box',
+  Piscina: 'water-ladder',
+  'Salão de festas': 'champagne-glasses',
 };
 
 const typeColors: { [key: string]: DefaultMantineColor } = {
-  '65c16ef1cd3c172e39838f88': 'blue',
-  '65c16ef1cd3c172e39838f89': 'cyan',
-  '65c16ef1cd3c172e39838f8a': 'violet',
-  '65c16ef1cd3c172e39838f8b': 'grape',
+  Casa: 'blue',
+  Apartamento: 'cyan',
+  Sobrado: 'violet',
+  Terreno: 'grape',
 };
 
 export const getEstateProps = ({
@@ -72,7 +72,7 @@ export const getEstateProps = ({
 
     return {
       key: feature.id,
-      icon: icons[feature.id],
+      icon: icons[feature.name],
       text,
     };
   });
@@ -106,7 +106,7 @@ export const getEstateProps = ({
       text: activeText,
     },
     type: {
-      color: typeColors[type.id],
+      color: typeColors[type.name],
       text: type.name,
     },
     featuresToShow,

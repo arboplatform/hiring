@@ -13,7 +13,7 @@ import { EstateDTO } from '@src/types/entities/estate';
 
 const getEstateBySlug = async (slug: string): Promise<Estate> => {
   const res = await fetch(`${process.env.BASE_URL}/estates/${slug}`, {
-    next: { tags: [`estate-${slug}`] },
+    cache: 'no-store',
   });
 
   if (!res.ok) {
@@ -87,7 +87,9 @@ const createEstate = async (estate: EstateDTO): Promise<Estate> => {
   if (!res.ok) {
     const error = await res.json();
     const message =
-      error.statusCode === 400 ? error.message : 'Failed to create estate';
+      error.statusCode === 400
+        ? error.message
+        : 'Não foi possível criar o imóvel';
 
     throw new Error(message);
   }
@@ -110,15 +112,12 @@ const updateEstate = async (
   });
 
   if (!res.ok) {
-    throw new Error('Failed to update estate');
+    throw new Error('Não foi possível editar o imóvel');
   }
 
   revalidateTag('estates');
 
-  const estateEdited = (await res.json()) as Estate;
-  revalidateTag(`estate-${estateEdited.slug}`);
-
-  return estateEdited;
+  return res.json();
 };
 
 export {
