@@ -62,7 +62,7 @@ $ cd hiring/backend
 $ npm i
 
 # Start Database with docker-compose
-docker-compose up -d && npx prisma db push && npx prisma db seed
+$ docker-compose up -d && npx prisma db push && npx prisma db seed
 
 # Start backed
 $ npm run start
